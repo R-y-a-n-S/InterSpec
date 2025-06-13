@@ -1,36 +1,38 @@
-#!/usr/bin/env bash
-#
-# Usage: ./tools/boost-any.sh <repo-root>   (defaults to current dir)
-# Runs a comby codemod ONLY on C/C++ source files, skipping build + VCS dirs.
+#!/bin/bash
 
-set -euo pipefail
-ROOT="${1:-.}"
+if [ -z "$1" ]; then
+    echo "Usage: $0 <repo_root>"
+    exit 1
+fi
 
-# 1. Build a file list -----------------------------------------------
-tmpfile="$(mktemp)"
-find "$ROOT" \
-  -type f \( -name '*.cpp' -o -name '*.cc' -o -name '*.cxx' \
-             -o -name '*.hpp' -o -name '*.hh' -o -name '*.h' \) \
-  -not -path '*/build/*'        \
-  -not -path '*/out/*'          \
-  -not -path '*/.git/*'         \
-  -not -path '*/third_party/*'  \
-  > "$tmpfile"
+REPO_ROOT="$1"
 
-# 2. Run replacements -------------------------------------------------
-echo "▶ Replacing boost::any → std::any …"
-comby -in-place -f "$tmpfile" 'boost::any' 'std::any' -matcher .generic
+if [ ! -d "$REPO_ROOT" ]; then
+    echo "Error: Directory $REPO_ROOT does not exist"
+    exit 1
+fi
 
-echo "▶ Replacing boost::any_cast → std::any_cast …"
-comby -in-place -f "$tmpfile" 'boost::any_cast' 'std::any_cast' -matcher .generic
+cd "$REPO_ROOT"
 
-echo "▶ Removing old include and adding <any> where needed …"
-# Drop the boost header
-sed -i '/#include[[:space:]]*<boost\/any\.hpp>/d' $(cat "$tmpfile")
+echo "Starting boost::any to std::any migration..."
 
-# Prepend <any> if still missing
-grep -L '#include <any>' $(cat "$tmpfile") \
-  | xargs -r sed -i '1i#include <any>'
+echo "Step 1/4: Replacing boost::any with std::any..."
+comby 'boost::any' 'std::any' .cpp,.h,.hpp -d .
 
-rm "$tmpfile"
-echo "✅ Codemod complete."
+echo "Step 2/4: Replacing boost::any_cast with std::any_cast..."
+comby 'boost::any_cast' 'std::any_cast' .cpp,.h,.hpp -d .
+
+echo "Step 3/4: Removing #include <boost/any.hpp> statements..."
+comby '#include <boost/any.hpp>' '' .cpp,.h,.hpp -d .
+
+echo "Step 4/4: Adding #include <any> to files that use std::any..."
+find . -name "*.cpp" -o -name "*.h" -o -name "*.hpp" | xargs grep -l "std::any" | while read file; do
+    if ! grep -q "#include <any>" "$file"; then
+        echo "  Adding #include <any> to $file"
+        sed -i '1i#include <any>' "$file"
+    else
+        echo "  $file already has #include <any>"
+    fi
+done
+
+echo "Migration complete!"
