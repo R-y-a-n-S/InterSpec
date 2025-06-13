@@ -2262,7 +2262,7 @@ void InterSpec::setPeakNuclide( const std::shared_ptr<const PeakDef> peak,
   
   index = m_peakModel->index( index.row(), PeakModel::kIsotope );
   
-  m_peakModel->setData( index, boost::any(WString(nuclide)) );
+  m_peakModel->setData( index, std::any(WString(nuclide)) );
   
   const PeakModel::PeakShrdPtr &p = m_peakModel->peak(index);
   
@@ -2285,7 +2285,7 @@ void InterSpec::setPeakNuclide( const std::shared_ptr<const PeakDef> peak,
       )
     {
       index = m_peakModel->index( index.row(), PeakModel::kPeakLineColor );
-      m_peakModel->setData( index, boost::any(WString(lines.m_input.m_color.cssText())) );
+      m_peakModel->setData( index, std::any(WString(lines.m_input.m_color.cssText())) );
       
       return;
     }
@@ -2305,7 +2305,7 @@ void InterSpec::setPeakNuclide( const std::shared_ptr<const PeakDef> peak,
          )
       {
         index = m_peakModel->index( index.row(), PeakModel::kPeakLineColor );
-        m_peakModel->setData( index, boost::any(WString(lines.m_input.m_color.cssText())) );
+        m_peakModel->setData( index, std::any(WString(lines.m_input.m_color.cssText())) );
         
         return;
       }

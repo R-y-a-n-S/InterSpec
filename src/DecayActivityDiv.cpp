@@ -129,18 +129,18 @@ public:
   {
   }
   
-  virtual boost::any data( const Wt::WModelIndex &index,
+  virtual std::any data( const Wt::WModelIndex &index,
                           int role = Wt::DisplayRole ) const
   {
     if( index.column() == 0 )
       return WStandardItemModel::data( index, role );
     
-    boost::any show = headerData( index.column(), Wt::Horizontal, Wt::UserRole );
+    std::any show = headerData( index.column(), Wt::Horizontal, Wt::UserRole );
     try
     {
-      const bool doShow = boost::any_cast<bool>( show );
+      const bool doShow = std::any_cast<bool>( show );
       if( !doShow )
-        return boost::any();
+        return std::any();
     }catch( std::exception &e )
     {
       cerr << "DecayActivityModel::data(...) unexpectedly caught: " << e.what()
@@ -151,7 +151,7 @@ public:
 #if( WT_VERSION > 0x3040000 )
     if( role == Wt::DisplayRole )
     {
-      boost::any val = WStandardItemModel::data( index, role );
+      std::any val = WStandardItemModel::data( index, role );
       if( val.empty() )
         return val;
       
@@ -161,7 +161,7 @@ public:
       
       // 0.00001 chosen arbitrarily, but values this small wont show up as non-zero on the chart
       if( valdbl < 0.00001*m_max_activity )
-        return boost::any( 0.0 );
+        return std::any( 0.0 );
       
       return val;
     }//if( role == Wt::DisplayRole )
@@ -173,17 +173,17 @@ public:
   
   void setNuclide( int colum, const std::string nuc )
   {
-    setHeaderData( colum, Wt::Horizontal, boost::any(nuc), Wt::UserRole+1 );
+    setHeaderData( colum, Wt::Horizontal, std::any(nuc), Wt::UserRole+1 );
   }
   
   std::string nuclide( int colum )
   {
     if( colum <= 0 || colum >= columnCount() )
       return "";
-    boost::any val = headerData( colum, Wt::Horizontal, Wt::UserRole+1 );
+    std::any val = headerData( colum, Wt::Horizontal, Wt::UserRole+1 );
     try
     {
-      return boost::any_cast<std::string>( val );
+      return std::any_cast<std::string>( val );
     }catch(...)
     {}
     
@@ -195,10 +195,10 @@ public:
     if( colum <= 0 || colum >= columnCount() )
       return true;
     
-    boost::any val = headerData( colum, Wt::Horizontal, Wt::UserRole );
+    std::any val = headerData( colum, Wt::Horizontal, Wt::UserRole );
     try
     {
-      return boost::any_cast<bool>( val );
+      return std::any_cast<bool>( val );
     }catch(...)
     {}
     
@@ -217,7 +217,7 @@ public:
         if( !showSeries( col ) )
           continue;
         
-        boost::any val = WStandardItemModel::data( index(row, col) );
+        std::any val = WStandardItemModel::data( index(row, col) );
         if( val.empty() )
           continue;
         
@@ -240,7 +240,7 @@ public:
     if( colum < 1 || colum >= columnCount() )
       return;
     
-    setHeaderData( colum, Wt::Horizontal, boost::any(show), Wt::UserRole );
+    setHeaderData( colum, Wt::Horizontal, std::any(show), Wt::UserRole );
     
 #if( WT_VERSION > 0x3040000 )
     updateMaxActivity();
@@ -3119,7 +3119,7 @@ void DecayActivityDiv::refreshDecayDisplay( const bool update_calc )
   try
   {
     if( noldcol > 2 )
-      showsum = boost::any_cast<bool>(m_decayModel->headerData(noldcol - 1,
+      showsum = std::any_cast<bool>(m_decayModel->headerData(noldcol - 1,
                                                 Wt::Horizontal, Wt::UserRole) );
   }catch( std::exception &e )
   {
@@ -3238,7 +3238,7 @@ void DecayActivityDiv::refreshDecayDisplay( const bool update_calc )
     stringstream labelText;
     labelText << fixed << setprecision(3) << (row * dt)/tunit;
     const WString label( labelText.str() );
-    m_decayModel->setData( row, 0, boost::any( label ) );
+    m_decayModel->setData( row, 0, std::any( label ) );
 
     for( int elN = 0; elN < nElements; ++elN )
     {
@@ -3420,7 +3420,7 @@ void DecayActivityDiv::updateYAxisRange()
       if( !m_decayModel->showSeries( col ) )
         continue;
       
-      boost::any data = m_decayModel->data( m_decayModel->index(row, col) );
+      std::any data = m_decayModel->data( m_decayModel->index(row, col) );
       const double yval = asNumber(data);
       if( !IsNan(yval) )
       {

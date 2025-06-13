@@ -2406,7 +2406,7 @@ bool QLSpectrumChart::gausPeakDrawRange( int &minrow, int &maxrow,
 
 void QLSpectrumChart::paintNonGausPeak( const QLPeakDef &peak, Wt::WPainter& painter ) const
 {
-  using boost::any_cast;
+  using std::any_cast;
 
   if( peak.type() != QLPeakDef::DataDefined )
     return;
@@ -2505,7 +2505,7 @@ void QLSpectrumChart::paintNonGausPeak( const QLPeakDef &peak, Wt::WPainter& pai
     
     const double lowerx = std::max( rowLowX, axisMinX );
     const double upperx = std::min( rowUpperX, axisMaxX );
-    const boost::any dataheightany = th1Model->displayBinValue( row, QLSpectrumDataModel::DATA_COLUMN );
+    const std::any dataheightany = th1Model->displayBinValue( row, QLSpectrumDataModel::DATA_COLUMN );
     const double contheight = continuum->offset_integral( rowLowX, rowUpperX );
     const double dataheight = asNumber( dataheightany );
     

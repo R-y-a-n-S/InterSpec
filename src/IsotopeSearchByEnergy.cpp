@@ -1681,7 +1681,7 @@ void IsotopeSearchByEnergy::assignSearchedOnPeaksToSelectedNuclide()
         if( !color.isDefault() )
         {
           const WModelIndex color_index = pmodel->index( peak_row, PeakModel::Columns::kPeakLineColor );
-          pmodel->setData( color_index, boost::any( WString(color.cssText()) ) );
+          pmodel->setData( color_index, std::any( WString(color.cssText()) ) );
         }
       }else
       {

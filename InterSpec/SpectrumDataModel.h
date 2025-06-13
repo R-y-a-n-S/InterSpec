@@ -136,10 +136,10 @@ public:
   virtual int rowCount(    const Wt::WModelIndex &parent = Wt::WModelIndex() ) const;
   virtual int columnCount( const Wt::WModelIndex &parent = Wt::WModelIndex() ) const;
   virtual Wt::WModelIndex parent( const Wt::WModelIndex &index ) const;
-  virtual boost::any data( const Wt::WModelIndex &index, int role = Wt::DisplayRole ) const;
+  virtual std::any data( const Wt::WModelIndex &index, int role = Wt::DisplayRole ) const;
   virtual Wt::WModelIndex index( int row, int column,
                                  const Wt::WModelIndex &parent = Wt::WModelIndex() ) const;
-  virtual boost::any headerData( int section, Wt::Orientation orientation = Wt::Horizontal,
+  virtual std::any headerData( int section, Wt::Orientation orientation = Wt::Horizontal,
                                  int role = Wt::DisplayRole ) const;
   virtual void reset();
 
@@ -174,7 +174,7 @@ public:
                        double &yMin, double &yMax ) const;
 
   //Simplified convenience functions to grab data without futzing around with
-  // either WModelIndex or boost::any
+  // either WModelIndex or std::any
   virtual double data( int row, int column ) const;
 
   //displayBinValue(...): returns the data value for the display bin (e.g.
@@ -182,8 +182,8 @@ public:
   //  If the bin x-values of the respective std::shared_ptr<SpecUtils::Measurement> do not align with
   //  the edges of histUsedForXAxis(), then simple linear interpolation is used.
   //  Also, this function does not take into account background subracting.
-  //  An empty boost::any() is returned if data is not avaliable
-  virtual boost::any displayBinValue( int row, ColumnType column ) const;
+  //  An empty std::any() is returned if data is not avaliable
+  virtual std::any displayBinValue( int row, ColumnType column ) const;
 
 
   void addIntegralOfHistogramToLegend( const bool doIt = true );
@@ -217,7 +217,7 @@ protected:
   // background subtract.
   bool m_secondDataOwnAxis;
 
-  // This does not affect the number of columns. When true, boost::any() is returned for
+  // This does not affect the number of columns. When true, std::any() is returned for
   // calls to data(...) requesting background or continuum.
   bool m_backgroundSubtract;
 

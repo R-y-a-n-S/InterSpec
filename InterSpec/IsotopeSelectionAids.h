@@ -146,9 +146,9 @@ protected:
   //  presses enter, than we do want to save the result
   virtual void doCloseEditor( Wt::WWidget *editor, bool save, bool isBlurr ) const;
 
-  boost::any editState( Wt::WWidget *editor ) const;
-  void setEditState( Wt::WWidget *editor, const boost::any &value ) const;
-  void setModelData( const boost::any &editState,
+  std::any editState( Wt::WWidget *editor ) const;
+  void setEditState( Wt::WWidget *editor, const std::any &value ) const;
+  void setModelData( const std::any &editState,
                      Wt::WAbstractItemModel *model,
                      const Wt::WModelIndex &index ) const;
 
@@ -174,7 +174,7 @@ public:
   virtual int rowCount( const Wt::WModelIndex & parent = Wt::WModelIndex() ) const;
   virtual int columnCount( const Wt::WModelIndex & parent = Wt::WModelIndex() ) const;
 
-  virtual boost::any data( const Wt::WModelIndex &index, int role = Wt::DisplayRole ) const;
+  virtual std::any data( const Wt::WModelIndex &index, int role = Wt::DisplayRole ) const;
 
   
   static Wt::WString displayText( const SandiaDecay::Nuclide *txt,

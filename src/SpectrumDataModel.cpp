@@ -682,9 +682,9 @@ boost::any SpectrumDataModel::data( const WModelIndex &index, int role ) const
 
   // Make sure it's within standard bounds.
   if( ( row    < 0 ) || ( row    >= numRows    ) )
-    return boost::any();
+    return std::any();
   if( ( column < 0 ) || ( column >= numColumns ) )
-    return boost::any();
+    return std::any();
 
   if( column == X_AXIS_COLUMN )
     return displayBinValue( row, X_AXIS_COLUMN );
@@ -696,7 +696,7 @@ boost::any SpectrumDataModel::data( const WModelIndex &index, int role ) const
     
     const double value = asNumber( displayBinValue( row, DATA_COLUMN ) )
                          - asNumber( displayBinValue( row, BACKGROUND_COLUMN ) );
-    return boost::any( value );
+    return std::any( value );
   }else if( (column == SECOND_DATA_COLUMN) && !!m_secondData )
   {
     if( !m_backgroundSubtract || m_secondDataOwnAxis || !m_background )
@@ -704,14 +704,14 @@ boost::any SpectrumDataModel::data( const WModelIndex &index, int role ) const
     
     const double value = asNumber( displayBinValue( row, SECOND_DATA_COLUMN ) )
                          - asNumber( displayBinValue( row, BACKGROUND_COLUMN ) );
-    return boost::any( value );
+    return std::any( value );
   }else if( (column == BACKGROUND_COLUMN) && m_background )
   {
     return displayBinValue( row, BACKGROUND_COLUMN );
   }
   
-  return boost::any();
-} //boost::any SpectrumDataModel::data( const WModelIndex &index, int role ) const
+  return std::any();
+} //std::any SpectrumDataModel::data( const WModelIndex &index, int role ) const
 
 
 WModelIndex SpectrumDataModel::index( int row, int column, const WModelIndex & ) const
@@ -821,8 +821,8 @@ boost::any SpectrumDataModel::headerData( int section, Orientation orientation, 
   } // else if( m_background && section == BACKGROUND_COLUMN )
   
   // This should never happen, but just in case.
-  return boost::any();
-} // boost::any SpectrumDataModel::headerData( int section, Orientation orientation, int role ) const
+  return std::any();
+} // std::any SpectrumDataModel::headerData( int section, Orientation orientation, int role ) const
 
 
 void SpectrumDataModel::reset()

@@ -2153,16 +2153,16 @@ boost::any PeakModel::data( const WModelIndex &index, int role ) const
       
     case PeakModel::kCps:
     {
-      boost::any areaAny = getPeakArea();
+      std::any areaAny = getPeakArea();
       
       if( areaAny.empty() )
         return areaAny;
       
-      const double area = boost::any_cast<double>(areaAny);
+      const double area = std::any_cast<double>(areaAny);
       const shared_ptr<const SpecUtils::Measurement> &dataH = m_foreground;
       const float liveTime = dataH ? dataH->live_time() : -1.0f;
       if( liveTime <= 0.0f )
-        return boost::any();
+        return std::any();
       
       const double cps = area / liveTime;
       const double uncert = peak->amplitudeUncert();
@@ -2189,13 +2189,13 @@ boost::any PeakModel::data( const WModelIndex &index, int role ) const
       else if( peak->reaction() )
         return WString( peak->reaction()->name() );
       
-      return boost::any();
+      return std::any();
     }//case kIsotope:
 
     case kDifference:
     {
       if( !peak->hasSourceGammaAssigned() )
-        return boost::any();
+        return std::any();
       
       try
       {
@@ -2205,14 +2205,14 @@ boost::any PeakModel::data( const WModelIndex &index, int role ) const
         return WString( text );
       }catch( std::exception & )
       {
-        return boost::any();
+        return std::any();
       }
     }
       
     case kPhotoPeakEnergy:
     {
       if( !peak->hasSourceGammaAssigned() )
-        return boost::any();
+        return std::any();
       
       try
       {
@@ -2244,7 +2244,7 @@ boost::any PeakModel::data( const WModelIndex &index, int role ) const
         return WString( text );
       }catch( std::exception & )
       {
-        return boost::any();
+        return std::any();
       }
     }//case kPhotoPeakEnergy:
 
@@ -2258,13 +2258,13 @@ boost::any PeakModel::data( const WModelIndex &index, int role ) const
         case PeakDef::NormalGamma:
         case PeakDef::XrayGamma:
           if( !peak->nuclearTransition() || !peak->parentNuclide() || (peak->decayParticleIndex() < 0) )
-            return boost::any();
+            return std::any();
           break;
           
         case PeakDef::AnnihilationGamma:
           // Annihilation gammas wont have a nuclearTransition or decay particle index associated with them
           if( !peak->parentNuclide() )
-            return boost::any();
+            return std::any();
           break;
         
         case PeakDef::SingleEscapeGamma:

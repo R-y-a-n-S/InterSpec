@@ -249,24 +249,24 @@ namespace
   protected:
     
  
-    boost::any editState( Wt::WWidget *editor ) const
+    std::any editState( Wt::WWidget *editor ) const
     {
       EditWidget *w = dynamic_cast<EditWidget *>(editor);
       if( !w )
       {
         cerr << "editState():\n\tLogic error - fix me!" << endl;
-        return boost::any();
+        return std::any();
       }//if( !w )
       
       WString csscolor = "none";
       if( w )
         csscolor = w->cssColor();
       
-      return boost::any( csscolor );
-    }//boost::any editState( WWidget *editor ) const
+      return std::any( csscolor );
+    }//std::any editState( WWidget *editor ) const
 
     
-    void setEditState( Wt::WWidget *editor, const boost::any &value ) const
+    void setEditState( Wt::WWidget *editor, const std::any &value ) const
     {
       EditWidget *w = dynamic_cast<EditWidget *>(editor);
       if( !w )
@@ -277,15 +277,15 @@ namespace
       
       try
       {
-        w->setCssCollor( boost::any_cast<WString>(value) );
+        w->setCssCollor( std::any_cast<WString>(value) );
       }catch(...)
       {
         cerr << "setEditState(...)\n\tPossible Logic error - fix me!" << endl;
       }//try / catch
-    }//void setEditState( WWidget *editor, const boost::any& value ) const
+    }//void setEditState( WWidget *editor, const std::any& value ) const
 
     
-    void setModelData( const boost::any &editState,
+    void setModelData( const std::any &editState,
                       Wt::WAbstractItemModel *model,
                       const Wt::WModelIndex &index ) const
     {

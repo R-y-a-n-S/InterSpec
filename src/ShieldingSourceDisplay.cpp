@@ -414,7 +414,7 @@ void SourceFitModel::displayUnitsChanged( bool useBq )
   }
   
   //cout << "m_displayCuries is now: " << m_displayCuries << endl;
-}//void SourceFitModel::displayUnitsChanged( boost::any value )
+}//void SourceFitModel::displayUnitsChanged( std::any value )
 
 
 const std::vector<ShieldingSourceFitCalc::IsoFitStruct> &SourceFitModel::underlyingData() const
@@ -874,7 +874,7 @@ void SourceFitModel::setUseSameAgeForIsotopes( bool useSame )
         WModelIndex ind = index( nuc, SourceFitModel::kAge );
         setData( ind, fitAgeWanted );
         ind = index( nuc, SourceFitModel::kAgeUncertainty );
-        setData( ind, boost::any() );
+        setData( ind, std::any() );
         setSharedAgeNuclide( nuc, NULL );
       }else
       {
@@ -1465,7 +1465,7 @@ Wt::WFlags<Wt::ItemFlag> SourceFitModel::flags( const Wt::WModelIndex &index ) c
 
 
 
-boost::any SourceFitModel::headerData( int section, Orientation orientation, int role ) const
+std::any SourceFitModel::headerData( int section, Orientation orientation, int role ) const
 {
   //When orientation is Horizontal, section is a column number,
   //  when orientation is Vertical, section is a row (peak) number.
@@ -1504,9 +1504,9 @@ boost::any SourceFitModel::headerData( int section, Orientation orientation, int
         break;
     }//switch( section )
     if( !tooltip_key )
-      return boost::any();
+      return std::any();
     
-    return boost::any( WString::tr(tooltip_key) );
+    return std::any( WString::tr(tooltip_key) );
   }//if( role == Wt::ToolTipRole )
 
   //If we're here, role==DisplayRole
@@ -1635,7 +1635,7 @@ boost::any SourceFitModel::data( const Wt::WModelIndex &index, int role ) const
         ans += DetectorPeakResponse::det_eff_geom_type_postfix(m_det_type);
       }//if( shouldHaveUncert )
       
-      return boost::any( WString(ans) );
+      return std::any( WString(ans) );
     }//case kActivity:
 
     case kFitActivity:
@@ -1643,18 +1643,18 @@ boost::any SourceFitModel::data( const Wt::WModelIndex &index, int role ) const
       switch( isof.sourceType )
       {
         case ShieldingSourceFitCalc::ModelSourceType::Point:
-          return boost::any( isof.fitActivity );
+          return std::any( isof.fitActivity );
           
         case ShieldingSourceFitCalc::ModelSourceType::Intrinsic:
         case ShieldingSourceFitCalc::ModelSourceType::Trace:
-          return boost::any();
+          return std::any();
       }//switch( iso.sourceType )
     }//case kFitActivity:
 
     case kAge:
     {
 //      if( isof.shieldingIsSource )
-//        return boost::any();
+//        return std::any();
       double age = 0.0, uncert = 0.0;
       const SandiaDecay::Nuclide *nuc = nullptr;
       if( isof.ageDefiningNuc && (isof.ageDefiningNuc != isof.nuclide) )
@@ -1685,33 +1685,33 @@ boost::any SourceFitModel::data( const Wt::WModelIndex &index, int role ) const
       }//if( isof.ageDefiningNuc && (isof.ageDefiningNuc!=isof.nuclide) )
       
       if( !isof.ageIsFittable )
-        return boost::any( WString::tr("NA") );
+        return std::any( WString::tr("NA") );
       
       string ans = PhysicalUnitsLocalized::printToBestTimeUnits( age, (extra_precision ? 8 : 2) );
       if( uncert > 0.0 )
         ans += " \xC2\xB1 " + PhysicalUnitsLocalized::printToBestTimeUnits( uncert, (extra_precision ? 8 : 1) );
       
-      return boost::any( WString(ans) );
+      return std::any( WString(ans) );
     }//case kAge:
 
     case kFitAge:
     {
 //      if( isof.shieldingIsSource )
-//        return boost::any();
+//        return std::any();
       if( isof.ageDefiningNuc && (isof.ageDefiningNuc != isof.nuclide) )
-        return boost::any();
+        return std::any();
       
       // Make sure there is more than two peaks being fitted for this nuclide to enable fitting age
       //  (I guess you could fix activity, and shielding, and select a progeny peak, and fit for
       //   age based on that peak growing in, but this probably isnt realistically ever done, but if
       //   you did want to do it, you could round-about calculate it)
       if( (isof.numProgenyPeaksSelected <= 1) && !isof.ageDefiningNuc )
-        return boost::any();
+        return std::any();
       
       if( !isof.ageIsFittable )
-        return boost::any();
+        return std::any();
       
-      return boost::any( isof.fitAge );
+      return std::any( isof.fitAge );
     }//case kFitAge:
 
     case kIsotopeMass:
@@ -1720,76 +1720,76 @@ boost::any SourceFitModel::data( const Wt::WModelIndex &index, int role ) const
       const double mass_grams = act / isof.nuclide->activityPerGram();
 
       if( IsInf(mass_grams) || IsNan(mass_grams) )
-        return boost::any();
+        return std::any();
 
-      return boost::any( WString(PhysicalUnits::printToBestMassUnits(mass_grams,(extra_precision ? 8 : 3),1.0)) );
+      return std::any( WString(PhysicalUnits::printToBestMassUnits(mass_grams,(extra_precision ? 8 : 3),1.0)) );
     }//case kIsotopeMass:
 
     case kActivityUncertainty:
     {
       if( isof.activityUncertainty < 0.0 )
-        return boost::any();
+        return std::any();
       
       double act = isof.activityUncertainty;
       string ans = PhysicalUnits::printToBestActivityUnits( act, (extra_precision ? 8 : 2), m_displayCuries );
       ans += DetectorPeakResponse::det_eff_geom_type_postfix(m_det_type);
       
-      return boost::any( WString(ans) );
+      return std::any( WString(ans) );
     }//case kActivityUncertainty:
 
     case kAgeUncertainty:
     {
       if( (!isof.ageIsFittable) || isof.ageUncertainty < 0.0 )
-        return boost::any();
+        return std::any();
       const string ans = PhysicalUnitsLocalized::printToBestTimeUnits( isof.ageUncertainty, (extra_precision ? 8 : 2) );
-      return boost::any( WString(ans) );
+      return std::any( WString(ans) );
     }//case kAgeUncertainty:
 
 #if( INCLUDE_ANALYSIS_TEST_SUITE )
     case kTruthActivity:
     {
       if( !isof.truthActivity )
-        return boost::any();
+        return std::any();
       
       string ans = PhysicalUnits::printToBestActivityUnits( *isof.truthActivity, (extra_precision ? 8 : 4), m_displayCuries );
       ans += DetectorPeakResponse::det_eff_geom_type_postfix(m_det_type);
       
-      return boost::any( WString(ans) );
+      return std::any( WString(ans) );
     }
       
     case kTruthActivityTolerance:
     {
       if( !isof.truthActivityTolerance )
-        return boost::any();
+        return std::any();
       string ans = PhysicalUnits::printToBestActivityUnits( *isof.truthActivityTolerance, (extra_precision ? 8 : 4), m_displayCuries );
       ans += DetectorPeakResponse::det_eff_geom_type_postfix(m_det_type);
       
-      return boost::any( WString(ans) );
+      return std::any( WString(ans) );
     }
       
     case kTruthAge:
     {
       if( !isof.truthAge )
-        return boost::any();
+        return std::any();
       const string ans = PhysicalUnitsLocalized::printToBestTimeUnits( *isof.truthAge, (extra_precision ? 8 : 4) );
-      return boost::any( WString(ans) );
+      return std::any( WString(ans) );
     }
       
     case kTruthAgeTolerance:
     {
       if( !isof.truthAgeTolerance )
-        return boost::any();
+        return std::any();
       const string ans = PhysicalUnitsLocalized::printToBestTimeUnits( *isof.truthAgeTolerance, (extra_precision ? 8 : 4) );
-      return boost::any( WString(ans) );
+      return std::any( WString(ans) );
     }
 #endif  //#if( INCLUDE_ANALYSIS_TEST_SUITE )
       
     case kNumColumns:
-      return boost::any();
+      return std::any();
   }//switch( column )
 
-  return boost::any();
-}//boost::any data(...) const
+  return std::any();
+}//std::any data(...) const
 
 
 Wt::WModelIndex SourceFitModel::index( int row, int column,
@@ -1822,7 +1822,7 @@ WModelIndex SourceFitModel::index( const string &symbol,
 }//WModelIndex index(...) const
 
 
-bool SourceFitModel::setData( const Wt::WModelIndex &index, const boost::any &value, int role )
+bool SourceFitModel::setData( const Wt::WModelIndex &index, const std::any &value, int role )
 {
   try
   {
@@ -1873,7 +1873,7 @@ bool SourceFitModel::setData( const Wt::WModelIndex &index, const boost::any &va
       if( value.type() != boost::typeindex::type_id<bool>().type_info() )
         return false;
       
-      boolean_val = boost::any_cast<bool>( value );
+      boolean_val = std::any_cast<bool>( value );
     }//if( (column==kFitActivity) || (column==kFitAge) )
 
     const WString txt_val = asString( value );
@@ -1900,8 +1900,8 @@ bool SourceFitModel::setData( const Wt::WModelIndex &index, const boost::any &va
 #if( SOURCE_FIT_MODEL_FULL_COPY_UNDO_REDO )
     const auto prev_data = make_shared<const vector<ShieldingSourceFitCalc::IsoFitStruct>>( m_nuclides );
 #else
-    const boost::any prev_value = SourceFitModel::data( index, Wt::ItemDataRole::UserRole + 10 );
-    const boost::any new_value = value;
+    const std::any prev_value = SourceFitModel::data( index, Wt::ItemDataRole::UserRole + 10 );
+    const std::any new_value = value;
 #endif
     
 

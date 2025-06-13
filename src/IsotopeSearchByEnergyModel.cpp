@@ -1793,7 +1793,7 @@ double IsotopeSearchByEnergyModel::assumedAge( const Wt::WModelIndex &index ) co
 }//double assumedAge( const Wt::WModelIndex &index ) const;
 
 
-boost::any IsotopeSearchByEnergyModel::data( const WModelIndex &index, int role ) const
+std::any IsotopeSearchByEnergyModel::data( const WModelIndex &index, int role ) const
 {
   const int row = index.row();
   const Column col = Column( index.column() );
@@ -1803,7 +1803,7 @@ boost::any IsotopeSearchByEnergyModel::data( const WModelIndex &index, int role 
   
   if( (role!=Wt::DisplayRole) || (matchNum>m_matches.size())
      || (col>=NumColumns) )
-    return boost::any();
+    return std::any();
   
   const vector<IsotopeMatch> &match = m_matches[matchNum];
   const IsotopeMatch &iso = match[energyNum];
@@ -1814,7 +1814,7 @@ boost::any IsotopeSearchByEnergyModel::data( const WModelIndex &index, int role 
     case ParentIsotope:
     case Distance:
       if( energyNum )
-        return boost::any();
+        return std::any();
       //fallthrough intentional (my first intentional use in like 5 years)
     case Energy: case BranchRatio: case ProfileDistance:
     case SpecificIsotope: case ParentHalfLife: case AssumedAge:
@@ -1825,11 +1825,11 @@ boost::any IsotopeSearchByEnergyModel::data( const WModelIndex &index, int role 
       break;
   }//switch( col )
   
-  return boost::any();
-}//boost::any data(...)
+  return std::any();
+}//std::any data(...)
 
 
-boost::any IsotopeSearchByEnergyModel::headerData( int section,
+std::any IsotopeSearchByEnergyModel::headerData( int section,
                                                   Wt::Orientation orientation,
                                                   int role ) const
 {
@@ -1878,7 +1878,7 @@ boost::any IsotopeSearchByEnergyModel::headerData( int section,
       case IsotopeSearchByEnergyModel::Column::ProfileDistance:
         return WString::tr("isbem-tt-profile");
       case IsotopeSearchByEnergyModel::Column::SpecificIsotope:
-        return boost::any();
+        return std::any();
       case IsotopeSearchByEnergyModel::Column::ParentHalfLife:
         return WString::tr("isbem-tt-parent-hl");
       case IsotopeSearchByEnergyModel::Column::AssumedAge:
@@ -1888,8 +1888,8 @@ boost::any IsotopeSearchByEnergyModel::headerData( int section,
     }//switch( col )
   }//ToolTipRole
   
-  return boost::any();
-}//boost::any headerData( int section, Orientation orientation, int role ) const
+  return std::any();
+}//std::any headerData( int section, Orientation orientation, int role ) const
 
 
 WModelIndex IsotopeSearchByEnergyModel::index( int row, int column,

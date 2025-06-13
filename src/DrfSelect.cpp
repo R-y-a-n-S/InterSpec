@@ -169,7 +169,7 @@ namespace
         int64_t val;
         try
         {
-          val = boost::any_cast<int64_t>( index.data() );
+          val = std::any_cast<int64_t>( index.data() );
           string valstr;
           if( val > 0 )
           {

@@ -190,13 +190,13 @@ MakeDrfChart::MakeDrfChart( Wt::WContainerWidget *parent )
   axis(Chart::Y1Axis).setMargin( 0 );
   axis(Chart::Y2Axis).setMargin( 0 );
   
-  m->setHeaderData( sm_energy_col, Wt::Horizontal, boost::any( WString::tr("Energy (keV)") ), Wt::DisplayRole );
-  m->setHeaderData( sm_data_eff_col, Wt::Horizontal, boost::any(WString::tr("md-chart-data-intrinsic-eff-label")), Wt::DisplayRole );
-  m->setHeaderData( sm_data_fwhm_col, Wt::Horizontal, boost::any(WString::tr("md-chart-data-fwhm-label")), Wt::DisplayRole );
-  m->setHeaderData( sm_equation_eff_col, Wt::Horizontal, boost::any(WString::tr("md-chart-fit-intrinsic-eff-label")), Wt::DisplayRole );
-  m->setHeaderData( sm_equation_eff_neg_uncert_col, Wt::Horizontal, boost::any(WString::tr("md-chart-intrinsic-eff-plus-label")), Wt::DisplayRole );
-  m->setHeaderData( sm_equation_eff_pos_uncert_col, Wt::Horizontal, boost::any(WString::tr("md-chart-intrinsic-eff-minus-label")), Wt::DisplayRole );
-  m->setHeaderData( sm_equation_fwhm_col, Wt::Horizontal, boost::any(WString::tr("md-chart-fit-fwhm-label")), Wt::DisplayRole );
+  m->setHeaderData( sm_energy_col, Wt::Horizontal, std::any( WString::tr("Energy (keV)") ), Wt::DisplayRole );
+  m->setHeaderData( sm_data_eff_col, Wt::Horizontal, std::any(WString::tr("md-chart-data-intrinsic-eff-label")), Wt::DisplayRole );
+  m->setHeaderData( sm_data_fwhm_col, Wt::Horizontal, std::any(WString::tr("md-chart-data-fwhm-label")), Wt::DisplayRole );
+  m->setHeaderData( sm_equation_eff_col, Wt::Horizontal, std::any(WString::tr("md-chart-fit-intrinsic-eff-label")), Wt::DisplayRole );
+  m->setHeaderData( sm_equation_eff_neg_uncert_col, Wt::Horizontal, std::any(WString::tr("md-chart-intrinsic-eff-plus-label")), Wt::DisplayRole );
+  m->setHeaderData( sm_equation_eff_pos_uncert_col, Wt::Horizontal, std::any(WString::tr("md-chart-intrinsic-eff-minus-label")), Wt::DisplayRole );
+  m->setHeaderData( sm_equation_fwhm_col, Wt::Horizontal, std::any(WString::tr("md-chart-fit-fwhm-label")), Wt::DisplayRole );
   
   setLegendEnabled( true );
   setLegendLocation( Wt::Chart::LegendLocation::LegendInside, Wt::Top, Wt::AlignmentFlag::AlignRight );
@@ -348,23 +348,23 @@ void MakeDrfChart::updateDataToModel()
         fracUncert2 += std::pow( data.source_count_rate_uncertainty / data.source_count_rate, 2.0f );
       const double eff_uncert = eff * std::sqrt(fracUncert2);
       
-      m->setData( row, sm_data_eff_col, boost::any(eff), Wt::DisplayRole );
+      m->setData( row, sm_data_eff_col, std::any(eff), Wt::DisplayRole );
       if( eff_uncert > 0.0 )
-        m->setData( row, sm_data_eff_col, boost::any(eff_uncert), Wt::UserRole );
-      m->setData( row, sm_data_eff_col, boost::any(data.peak_color), Wt::MarkerPenColorRole );
-      m->setData( row, sm_data_eff_col, boost::any(data.peak_color), Wt::MarkerBrushColorRole );
+        m->setData( row, sm_data_eff_col, std::any(eff_uncert), Wt::UserRole );
+      m->setData( row, sm_data_eff_col, std::any(data.peak_color), Wt::MarkerPenColorRole );
+      m->setData( row, sm_data_eff_col, std::any(data.peak_color), Wt::MarkerBrushColorRole );
       if( data.source_information.size() )
-        m->setData( row, sm_data_eff_col, boost::any( WString::fromUTF8(data.source_information)), Wt::ToolTipRole );
+        m->setData( row, sm_data_eff_col, std::any( WString::fromUTF8(data.source_information)), Wt::ToolTipRole );
     }//if( we can calculate a efficiency )
     
     if( data.peak_fwhm > 0.0f )
     {
       const double fwhm = data.peak_fwhm;
-      m->setData( row, sm_data_fwhm_col, boost::any( fwhm ), Wt::DisplayRole );
+      m->setData( row, sm_data_fwhm_col, std::any( fwhm ), Wt::DisplayRole );
       if( data.peak_fwhm_uncertainty > 0.0f )
-        m->setData( row, sm_data_fwhm_col, boost::any( static_cast<double>(data.peak_fwhm_uncertainty) ), Wt::UserRole );
-      m->setData( row, sm_data_fwhm_col, boost::any(data.peak_color), Wt::MarkerPenColorRole );
-      m->setData( row, sm_data_fwhm_col, boost::any(data.peak_color), Wt::MarkerBrushColorRole );
+        m->setData( row, sm_data_fwhm_col, std::any( static_cast<double>(data.peak_fwhm_uncertainty) ), Wt::UserRole );
+      m->setData( row, sm_data_fwhm_col, std::any(data.peak_color), Wt::MarkerPenColorRole );
+      m->setData( row, sm_data_fwhm_col, std::any(data.peak_color), Wt::MarkerBrushColorRole );
     }//if( we have FWHM info )
   }//for( int i = 0; i < ndata; ++i )
   
@@ -393,7 +393,7 @@ void MakeDrfChart::updateEqnEnergyToModel()
   {
     //Shouldnt ever happen, but JIC
     for( int row = 0; row < sm_num_eqn_energy_rows; ++row )
-      m->setData( row, sm_energy_col, boost::any() );
+      m->setData( row, sm_energy_col, std::any() );
     return;
   }//if( m_det_lower_energy == m_det_upper_energy )
   
@@ -402,7 +402,7 @@ void MakeDrfChart::updateEqnEnergyToModel()
   for( int row = 0; row < sm_num_eqn_energy_rows; ++row )
   {
     const double energy = m_det_lower_energy + ((m_det_upper_energy * row) / (sm_num_eqn_energy_rows - 1.0f));
-    m->setData( row, sm_energy_col, boost::any(energy) );
+    m->setData( row, sm_energy_col, std::any(energy) );
   }//for( int row = 0; row < sm_num_eqn_energy_rows; ++row )
 }//void updateEqnEnergyToModel()
 
@@ -429,9 +429,9 @@ void MakeDrfChart::updateEffEquationToModel()
     
     for( int row = 0; row < sm_num_eqn_energy_rows; ++row )
     {
-      m->setData( row, sm_equation_eff_col, boost::any() );
-      m->setData( row, sm_equation_eff_pos_uncert_col, boost::any() );
-      m->setData( row, sm_equation_eff_neg_uncert_col, boost::any() );
+      m->setData( row, sm_equation_eff_col, std::any() );
+      m->setData( row, sm_equation_eff_pos_uncert_col, std::any() );
+      m->setData( row, sm_equation_eff_neg_uncert_col, std::any() );
     }
     return;
   }//if( no equation )
@@ -445,14 +445,14 @@ void MakeDrfChart::updateEffEquationToModel()
     
     if( IsNan(eff) || IsInf(eff) )
     {
-      m->setData( row, sm_equation_eff_col, boost::any() );
-      m->setData( row, sm_equation_eff_pos_uncert_col, boost::any() );
-      m->setData( row, sm_equation_eff_neg_uncert_col, boost::any() );
+      m->setData( row, sm_equation_eff_col, std::any() );
+      m->setData( row, sm_equation_eff_pos_uncert_col, std::any() );
+      m->setData( row, sm_equation_eff_neg_uncert_col, std::any() );
     }else
     {
-      m->setData( row, sm_equation_eff_col, boost::any(eff) );
+      m->setData( row, sm_equation_eff_col, std::any(eff) );
       
-      boost::any lowerval, upperval;
+      std::any lowerval, upperval;
       
       if( m_efficiencyCoefUncerts.size() == m_efficiencyCoefs.size() )
       {
@@ -480,9 +480,9 @@ void MakeDrfChart::updateEffEquationToModel()
         neguncert = sqrt(neguncert);
         
         if( IsNan(posuncert) || IsInf(posuncert) )
-          upperval = boost::any( eff + posuncert );
+          upperval = std::any( eff + posuncert );
         if( IsNan(neguncert) || IsInf(neguncert) )
-          lowerval = boost::any( eff - neguncert );
+          lowerval = std::any( eff - neguncert );
       }//if( we have uncertainties )
       
       m->setData( row, sm_equation_eff_pos_uncert_col, upperval );
@@ -516,7 +516,7 @@ void MakeDrfChart::updateFwhmEquationToModel()
       return;
     
     for( int row = 0; row < sm_num_eqn_energy_rows; ++row )
-      m->setData( row, sm_equation_fwhm_col, boost::any() );
+      m->setData( row, sm_equation_fwhm_col, std::any() );
     return;
   }//if( no equation )
   
@@ -545,7 +545,7 @@ void MakeDrfChart::updateFwhmEquationToModel()
   {
     const float energy = static_cast<float>( m_det_lower_energy + ((m_det_upper_energy * row) / (sm_num_eqn_energy_rows - 1.0)) );
     const double fwhm = DetectorPeakResponse::peakResolutionFWHM( units*energy, eqnType, m_fwhmCoefs );
-    m->setData( row, sm_equation_fwhm_col, boost::any(fwhm) );
+    m->setData( row, sm_equation_fwhm_col, std::any(fwhm) );
   }//for( loop over eqn rows )
 }//void updateFwhmEquationToModel()
 

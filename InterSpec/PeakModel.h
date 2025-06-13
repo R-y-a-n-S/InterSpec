@@ -263,10 +263,10 @@ public:
   virtual int rowCount( const Wt::WModelIndex &parent = Wt::WModelIndex() ) const;
   virtual int columnCount( const Wt::WModelIndex &parent = Wt::WModelIndex() ) const;
   virtual Wt::WModelIndex parent( const Wt::WModelIndex &index ) const;
-  virtual boost::any data( const Wt::WModelIndex &index, int role = Wt::DisplayRole ) const;
+  virtual std::any data( const Wt::WModelIndex &index, int role = Wt::DisplayRole ) const;
   virtual Wt::WModelIndex index( int row, int column, const
                                  Wt::WModelIndex &parent = Wt::WModelIndex() ) const;
-  virtual boost::any headerData( int section,
+  virtual std::any headerData( int section,
                                  Wt::Orientation orientation = Wt::Horizontal,
                                  int role = Wt::DisplayRole ) const;
 
@@ -278,7 +278,7 @@ public:
                               const Wt::WModelIndex &parent = Wt::WModelIndex() );
 
   virtual Wt::WFlags<Wt::ItemFlag> flags( const Wt::WModelIndex &index ) const;
-  virtual bool setData( const Wt::WModelIndex &index, const boost::any &value,
+  virtual bool setData( const Wt::WModelIndex &index, const std::any &value,
                         int role = Wt::EditRole );
 
   

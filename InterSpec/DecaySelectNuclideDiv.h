@@ -83,7 +83,7 @@ public:
   virtual int rowCount( const Wt::WModelIndex & parent = Wt::WModelIndex() ) const;
   virtual int columnCount( const Wt::WModelIndex & parent = Wt::WModelIndex() ) const;
 
-  virtual boost::any data( const Wt::WModelIndex &index, int role = Wt::DisplayRole ) const;
+  virtual std::any data( const Wt::WModelIndex &index, int role = Wt::DisplayRole ) const;
 
   //determineAndRemoveIsoLevel(...) looks for patterns such as 'Co60m', 'Co60meta',
   //  'Co 60 m', etc. to determine if the user is inputting a metts stable state.

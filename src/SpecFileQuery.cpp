@@ -1380,17 +1380,17 @@ namespace SpecFileQuery
   
   void SpecLogicTest::addCondition( const SpecTest &test )
   {
-    m_fields.push_back( boost::any(test) );
+    m_fields.push_back( std::any(test) );
   }
   
   void SpecLogicTest::addLogic( const LogicType test )
   {
-    m_fields.push_back( boost::any(test) );
+    m_fields.push_back( std::any(test) );
   }
   
   void SpecLogicTest::addEventXmlTest( const EventXmlTest &test )
   {
-    m_fields.push_back( boost::any(test) );
+    m_fields.push_back( std::any(test) );
   }
   
   std::string SpecLogicTest::summary() const
@@ -1400,13 +1400,13 @@ namespace SpecFileQuery
     return strm.str();
   }
   
-  std::ostream &SpecLogicTest::print_equation( std::vector<boost::any> fields, std::ostream &strm )
+  std::ostream &SpecLogicTest::print_equation( std::vector<std::any> fields, std::ostream &strm )
   {
     for( size_t i = 0; i < fields.size(); ++i )
     {
       try
       {
-        const LogicType val = boost::any_cast<LogicType>( fields[i] );
+        const LogicType val = std::any_cast<LogicType>( fields[i] );
         switch( val )
         {
           case LogicalOr:         strm << " || "; break;
@@ -1420,19 +1420,19 @@ namespace SpecFileQuery
       
       try
       {
-        const bool val = boost::any_cast<bool>( fields[i] );
+        const bool val = std::any_cast<bool>( fields[i] );
         strm << (val ? "True" : "False");
       }catch(...){}
       
       try
       {
-        const SpecTest test = boost::any_cast<SpecTest>( fields[i] );
+        const SpecTest test = std::any_cast<SpecTest>( fields[i] );
         strm << "[" << test.summary() << "]";
       }catch(...){}
       
       try
       {
-        const EventXmlTest test = boost::any_cast<EventXmlTest>( fields[i] );
+        const EventXmlTest test = std::any_cast<EventXmlTest>( fields[i] );
         strm << "[" << test.summary() << "]";
       }catch(...){}
       
@@ -1442,7 +1442,7 @@ namespace SpecFileQuery
   }//std::ostream &print_equation(...)
   
   
-  bool SpecLogicTest::evaluate( std::vector<boost::any> fields, const SpecFileInfoToQuery &meas )
+  bool SpecLogicTest::evaluate( std::vector<std::any> fields, const SpecFileInfoToQuery &meas )
   {
     if( !meas.is_file )
       return false;
@@ -1458,7 +1458,7 @@ namespace SpecFileQuery
     {
       try
       {
-        const LogicType startlogic = boost::any_cast<LogicType>( fields[i] );
+        const LogicType startlogic = std::any_cast<LogicType>( fields[i] );
         if( startlogic == LogicalOpenParan )
         {
           int nparen = 1;
@@ -1468,7 +1468,7 @@ namespace SpecFileQuery
           {
             try
             {
-              const LogicType closelogic = boost::any_cast<LogicType>( fields[closepos] );
+              const LogicType closelogic = std::any_cast<LogicType>( fields[closepos] );
               if( closelogic == LogicalOpenParan )
                 ++nparen;
               else if( closelogic == LogicalCloseParan )
@@ -1482,7 +1482,7 @@ namespace SpecFileQuery
           if( closepos >= fields.size() )
             throw runtime_error( "Failed to find closing parenthesis, invalid expression" );
           
-          vector<boost::any> inside( fields.begin() + i + 1, fields.begin() + closepos );
+          vector<std::any> inside( fields.begin() + i + 1, fields.begin() + closepos );
           
           //cerr << "Had " << fields.size() << " elements\n\t";
           //print_equation( fields, cerr ) << endl;
@@ -1496,7 +1496,7 @@ namespace SpecFileQuery
           
           const bool answer = SpecLogicTest::evaluate( inside, meas );
           
-          fields.insert( fields.begin() + i, boost::any(answer) );
+          fields.insert( fields.begin() + i, std::any(answer) );
           //cerr << "New eqn becomes:" << endl;
           //print_equation( fields, cerr ) << endl;
         }//if( startlogic == LogicalOpenParan )
@@ -1510,18 +1510,18 @@ namespace SpecFileQuery
         //  better so we can short-circuit some logic.  But since parsing the
         //  file is the lions share of the time for this test, this optimization
         //  can be put off.
-        const SpecTest test = boost::any_cast<SpecTest>( fields[i] );
+        const SpecTest test = std::any_cast<SpecTest>( fields[i] );
         const bool pass = test.test( meas );
-        fields[i] = boost::any( pass );
+        fields[i] = std::any( pass );
         continue;
       }catch(... ){}
       
       
       try
       {
-        const EventXmlTest test = boost::any_cast<EventXmlTest>( fields[i] );
+        const EventXmlTest test = std::any_cast<EventXmlTest>( fields[i] );
         const bool pass = test.test( meas );
-        fields[i] = boost::any( pass );
+        fields[i] = std::any( pass );
         continue;
       }catch(...){}
       
@@ -1537,7 +1537,7 @@ namespace SpecFileQuery
     {
       try
       {
-        const LogicType notlogic = boost::any_cast<LogicType>( fields[i] );
+        const LogicType notlogic = std::any_cast<LogicType>( fields[i] );
         if( notlogic == LogicalNot )
         {
           if( i == (fields.size()-1) )
@@ -1545,8 +1545,8 @@ namespace SpecFileQuery
           
           try
           {
-            const bool nextval = boost::any_cast<bool>( fields[i+1] );
-            fields[i+1] = boost::any( !nextval );
+            const bool nextval = std::any_cast<bool>( fields[i+1] );
+            fields[i+1] = std::any( !nextval );
             fields.erase( fields.begin() + i );
           }catch(...)
           {
@@ -1569,7 +1569,7 @@ namespace SpecFileQuery
       {
         try
         {
-          boost::any_cast<bool>(fields[i]);
+          std::any_cast<bool>(fields[i]);
         }catch(...)
         {
           throw runtime_error( "Expect all boost::any's to be bools in even locations at this point" );
@@ -1578,7 +1578,7 @@ namespace SpecFileQuery
       {
         try
         {
-          const LogicType logic = boost::any_cast<LogicType>( fields[i] );
+          const LogicType logic = std::any_cast<LogicType>( fields[i] );
           if( logic != LogicalOr && logic != LogicalAnd )
             throw runtime_error( "Expect all logic to be AND or OR only at this point" );
         }catch(...)
@@ -1588,12 +1588,12 @@ namespace SpecFileQuery
       }
     }//for( size_t i = 0; i < fields.size(); ++i )
     
-    bool answer = boost::any_cast<bool>( fields[0] );
+    bool answer = std::any_cast<bool>( fields[0] );
     
     for( size_t i = 1; i < (fields.size()-1); i += 2 )
     {
-      const LogicType logic = boost::any_cast<LogicType>( fields[i] );
-      const bool nextval = boost::any_cast<bool>( fields[i+1] );
+      const LogicType logic = std::any_cast<LogicType>( fields[i] );
+      const bool nextval = std::any_cast<bool>( fields[i+1] );
       if( logic == LogicalOr )
         answer = (answer || nextval);
       else if( logic == LogicalAnd )
@@ -1603,7 +1603,7 @@ namespace SpecFileQuery
     //cerr << "Eqn evaluated to " << (answer ? "True" : "False") << endl << endl << endl;
     
     return answer;
-  }//bool SpecLogicTest::evaluate( std::vector<boost::any> fields, const SpecFileInfoToQuery &meas )
+  }//bool SpecLogicTest::evaluate( std::vector<std::any> fields, const SpecFileInfoToQuery &meas )
   
   
   bool SpecLogicTest::test( const SpecFileInfoToQuery &meas ) const
@@ -1628,7 +1628,7 @@ namespace SpecFileQuery
       {
         try
         {
-          const LogicType t = boost::any_cast<LogicType>( m_fields[i] );
+          const LogicType t = std::any_cast<LogicType>( m_fields[i] );
           if( t == LogicalOpenParan )
             ++nparan;
           else if( t == LogicalCloseParan )
@@ -1649,7 +1649,7 @@ namespace SpecFileQuery
         LogicType t;
         try
         {
-          t = boost::any_cast<LogicType>( m_fields[i] );
+          t = std::any_cast<LogicType>( m_fields[i] );
         }catch(...)
         {
           continue;
@@ -1673,7 +1673,7 @@ namespace SpecFileQuery
           
           try
           {
-            nextt = boost::any_cast<LogicType>( m_fields[i+1] );
+            nextt = std::any_cast<LogicType>( m_fields[i+1] );
             nextislogic = true;
           }catch(...){ }
           
@@ -1682,7 +1682,7 @@ namespace SpecFileQuery
            SpecTest nexttest;
            try
            {
-           nexttest = boost::any_cast<SpecTest>( m_fields[i+1] );
+           nexttest = std::any_cast<SpecTest>( m_fields[i+1] );
            nextistest = true;
            }catch(...){}
            */
@@ -1705,13 +1705,13 @@ namespace SpecFileQuery
         {
           try
           {
-          test = boost::any_cast<SpecTest>( m_fields[i] );
+          test = std::any_cast<SpecTest>( m_fields[i] );
           istest = true;
           }catch(...){}
           
           try
           {
-            xmltest = boost::any_cast<EventXmlTest>( m_fields[i] );
+            xmltest = std::any_cast<EventXmlTest>( m_fields[i] );
             isxmltest = true;
           }catch(...){}
           
@@ -1721,7 +1721,7 @@ namespace SpecFileQuery
         {
           try
           {
-            closeparen = boost::any_cast<LogicType>( m_fields[i] );
+            closeparen = std::any_cast<LogicType>( m_fields[i] );
             if( closeparen != LogicalCloseParan )
               continue;
           }catch(...)
@@ -1734,7 +1734,7 @@ namespace SpecFileQuery
         {
           try
           {
-            const LogicType nextt = boost::any_cast<LogicType>( m_fields[i+1] );
+            const LogicType nextt = std::any_cast<LogicType>( m_fields[i+1] );
             
             switch( nextt )
             {
@@ -1770,13 +1770,13 @@ namespace SpecFileQuery
         EventXmlTest xmltest;
         try
         {
-          test = boost::any_cast<SpecTest>( m_fields[i] );
+          test = std::any_cast<SpecTest>( m_fields[i] );
           istest = true;
         }catch(...){}
         
         try
         {
-          xmltest = boost::any_cast<EventXmlTest>( m_fields[i] );
+          xmltest = std::any_cast<EventXmlTest>( m_fields[i] );
           isxmltest = false;
         }catch(...){}
         

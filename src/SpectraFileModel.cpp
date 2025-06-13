@@ -1593,7 +1593,7 @@ int SpectraFileModel::rowCount( const Wt::WModelIndex &parent ) const
 }//int rowCount(...)
 
 
-boost::any SpectraFileModel::data( const Wt::WModelIndex &index,
+std::any SpectraFileModel::data( const Wt::WModelIndex &index,
                                    int role ) const
 {
   if( role != Wt::DisplayRole )
@@ -1610,7 +1610,7 @@ boost::any SpectraFileModel::data( const Wt::WModelIndex &index,
 //    MarkerPenColorRole = 16,  //!< Marker pen color (for Chart::WCartesianChart)
 //    MarkerBrushColorRole = 17,//!< Marker brush color (for Chart::WCartesianChart)
 //    cerr << "\trole != Wt::DisplayRole: " << role << endl;
-    return boost::any();
+    return std::any();
   }//else cerr << "Asked for display role" << endl;
 
   const Level indexLevel = level(index);
@@ -1618,7 +1618,7 @@ boost::any SpectraFileModel::data( const Wt::WModelIndex &index,
   if( indexLevel == InvalidLevel )
   {
     cerr << "\t!index.isValid()" << endl;
-    return boost::any();
+    return std::any();
   }//if( indexLevel == InvalidLevel )
 
   const int row = index.row();
@@ -1644,7 +1644,7 @@ boost::any SpectraFileModel::data( const Wt::WModelIndex &index,
     {
       cerr << "SpectraFileModel::data(...):\n\tfailed to find spectra, returning empty answer"
            << endl;
-      return boost::any();
+      return std::any();
     }//if( !found )
 
     if( row >= static_cast<int>( fileHeader->m_samples.size() ) )
@@ -1652,7 +1652,7 @@ boost::any SpectraFileModel::data( const Wt::WModelIndex &index,
       cerr << "\trow >= static_cast<int>( fileHeader->m_samples.size() ) row="
            << row << ", fileHeader->m_samples.size()="
            << fileHeader->m_samples.size() << endl;
-      return boost::any();
+      return std::any();
     }
 
     const SpectraHeader &spectra_header = fileHeader->m_samples[row];
@@ -1723,8 +1723,8 @@ boost::any SpectraFileModel::data( const Wt::WModelIndex &index,
     //get rid of malicious stuff here
     
     if( !str.empty() )
-      return boost::any( WString(str) );
-    return boost::any();
+      return std::any( WString(str) );
+    return std::any();
   }//if( index.parent().isValid() )
 
 //  indexLevel == FileHeaderLevel
@@ -1732,7 +1732,7 @@ boost::any SpectraFileModel::data( const Wt::WModelIndex &index,
   if( row >= static_cast<int>( m_spectra.size() ) )
   {
     cerr << "\trow >= static_cast<int>( m_spectra.size() )" << endl;
-    return boost::any();
+    return std::any();
   }
 
   std::shared_ptr<SpectraFileHeader> header = m_spectra[row];
@@ -1742,7 +1742,7 @@ boost::any SpectraFileModel::data( const Wt::WModelIndex &index,
   switch( field )
   {
     case kDisplayName:
-      strm << header->displayName().toUTF8();  //return boost::any( header->displayName() );
+      strm << header->displayName().toUTF8();  //return std::any( header->displayName() );
     break;
       
     case kUploadTime:
@@ -1805,9 +1805,9 @@ boost::any SpectraFileModel::data( const Wt::WModelIndex &index,
   //get rid of malicious stuff here
   
   if( !str.empty() )
-    return boost::any( WString(str) );
-  return boost::any();
-}//boost::any SpectraFileModel::data(...)
+    return std::any( WString(str) );
+  return std::any();
+}//std::any SpectraFileModel::data(...)
 
 
 std::shared_ptr<const SpectraFileHeader> SpectraFileModel::fileHeader( int row ) const
@@ -2005,32 +2005,32 @@ boost::any SpectraFileModel::headerData( int section, Orientation orientation, i
   {
     // Make sure it's within the proper bounds
     if( section < 0 || section >= columnCount() )
-      return boost::any();
+      return std::any();
 
     const DisplayFields field = DisplayFields( section );
     switch( field )
     {
-      case kDisplayName:     return boost::any( WString("File") );
-      case kNumMeasurements: return boost::any( WString("N-Samples") );
-      case kLiveTime:        return boost::any( WString("Live Time (s)") );
-      case kRealTime:        return boost::any( WString("Real Time (s)") );
-      case kGammaCounts:     return boost::any( WString("Gam. Count") );
-      case kNeutronCounts:   return boost::any( WString("Neut. Count") );
-      case kSpectrumTime:    return boost::any( WString("Time Taken") );
-      case kNumDetectors:    return boost::any( WString("N-Dets.") );
-      case kUploadTime:      return boost::any( WString("Loaded") );
-      case kRiidResult:      return boost::any( WString("File RID") );
+      case kDisplayName:     return std::any( WString("File") );
+      case kNumMeasurements: return std::any( WString("N-Samples") );
+      case kLiveTime:        return std::any( WString("Live Time (s)") );
+      case kRealTime:        return std::any( WString("Real Time (s)") );
+      case kGammaCounts:     return std::any( WString("Gam. Count") );
+      case kNeutronCounts:   return std::any( WString("Neut. Count") );
+      case kSpectrumTime:    return std::any( WString("Time Taken") );
+      case kNumDetectors:    return std::any( WString("N-Dets.") );
+      case kUploadTime:      return std::any( WString("Loaded") );
+      case kRiidResult:      return std::any( WString("File RID") );
       case NumDisplayFields: break;
     };//switch( field )
 
   }else if( orientation == Vertical )
   {
     if( section < 0 || section >= rowCount() )
-      return boost::any();
-    return boost::any();
+      return std::any();
+    return std::any();
   }//if( orientation == Horizontal ) / else Vertical
 
-  return boost::any();
+  return std::any();
 }//any SpectraFileModel::headerData(...)
 
 

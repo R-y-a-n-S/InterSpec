@@ -274,9 +274,9 @@ public:
   virtual int rowCount( const Wt::WModelIndex &p = Wt::WModelIndex() ) const;
   virtual Wt::WFlags<Wt::ItemFlag> flags( const Wt::WModelIndex &index ) const;
   virtual Wt::WModelIndex parent( const Wt::WModelIndex &index ) const;
-  virtual boost::any data( const Wt::WModelIndex &index,
+  virtual std::any data( const Wt::WModelIndex &index,
                            int role = Wt::DisplayRole ) const;
-  boost::any headerData( int section,
+  std::any headerData( int section,
                          Wt::Orientation orientation, int role ) const;
   virtual Wt::WModelIndex index( int row, int column,
                       const Wt::WModelIndex &parent = Wt::WModelIndex() ) const;
@@ -284,7 +284,7 @@ public:
   //setData(...) note that if activity or age is set, then the associated
   //  uncertainty for that quantity will be reset as well.
   virtual bool setData( const Wt::WModelIndex &index,
-                        const boost::any &value, int role = Wt::EditRole );
+                        const std::any &value, int role = Wt::EditRole );
   virtual void sort( int column, Wt::SortOrder order = Wt::AscendingOrder );
 
 

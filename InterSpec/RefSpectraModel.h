@@ -23,8 +23,8 @@ public:
   virtual int rowCount( const Wt::WModelIndex &parent = Wt::WModelIndex() ) const override;
   virtual Wt::WModelIndex parent( const Wt::WModelIndex &index ) const override;
   virtual Wt::WModelIndex index( int row, int column, const Wt::WModelIndex &parent = Wt::WModelIndex() ) const override;
-  virtual boost::any data( const Wt::WModelIndex &index, int role = Wt::DisplayRole ) const override;
-  virtual boost::any headerData( int section, Wt::Orientation orientation = Wt::Orientation::Horizontal, int role = Wt::DisplayRole ) const override;
+  virtual std::any data( const Wt::WModelIndex &index, int role = Wt::DisplayRole ) const override;
+  virtual std::any headerData( int section, Wt::Orientation orientation = Wt::Orientation::Horizontal, int role = Wt::DisplayRole ) const override;
 
   virtual void sort(int column, Wt::SortOrder order = Wt::SortOrder::AscendingOrder );
 

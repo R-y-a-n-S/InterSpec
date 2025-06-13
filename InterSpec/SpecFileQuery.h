@@ -209,7 +209,7 @@ namespace SpecFileQuery
   class EventXmlTest
   {
   public:
-    /** Default constructor (to play well with boost::any).
+    /** Default constructor (to play well with std::any).
      You must call #set_string_test_info or set_date_test_info, or the #isvalid
      function will throw.
      */
@@ -302,11 +302,11 @@ namespace SpecFileQuery
     std::string summary() const;
     
   protected:
-    static bool evaluate( std::vector<boost::any> fields, const SpecFileInfoToQuery &meas );
+    static bool evaluate( std::vector<std::any> fields, const SpecFileInfoToQuery &meas );
     
-    static std::ostream &print_equation( std::vector<boost::any> fields, std::ostream &strm );
+    static std::ostream &print_equation( std::vector<std::any> fields, std::ostream &strm );
     
-    std::vector<boost::any> m_fields;  //Either LogicType or SpecTest
+    std::vector<std::any> m_fields;  //Either LogicType or SpecTest
   };
 }//namespace SpecFileQuery_h
 

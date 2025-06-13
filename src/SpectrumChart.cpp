@@ -2382,7 +2382,7 @@ void SpectrumChart::paintHighlightRegions( Wt::WPainter &painter ) const
 
 void SpectrumChart::paintNonGausPeak( const PeakDef &peak, Wt::WPainter& painter ) const
 {
-  using boost::any_cast;
+  using std::any_cast;
 
   if( peak.type() != PeakDef::DataDefined )
     return;
@@ -2482,7 +2482,7 @@ void SpectrumChart::paintNonGausPeak( const PeakDef &peak, Wt::WPainter& painter
     
     const double lowerx = std::max( rowLowX, axisMinX );
     const double upperx = std::min( rowUpperX, axisMaxX );
-    const boost::any dataheightany = th1Model->displayBinValue( row, SpectrumDataModel::DATA_COLUMN );
+    const std::any dataheightany = th1Model->displayBinValue( row, SpectrumDataModel::DATA_COLUMN );
     const double contheight = continuum->offset_integral( rowLowX, rowUpperX, data );
     const double dataheight = asNumber( dataheightany );
     
