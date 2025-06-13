@@ -1,3 +1,4 @@
+#include <any>
 #ifndef RefSpectraWidget_h
 #define RefSpectraWidget_h
 

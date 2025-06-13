@@ -1,3 +1,4 @@
+#include <any>
 #ifndef ShieldingSourceDisplay_h
 #define ShieldingSourceDisplay_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

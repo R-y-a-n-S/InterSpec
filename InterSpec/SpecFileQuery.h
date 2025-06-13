@@ -1,3 +1,4 @@
+#include <any>
 #ifndef SpecFileQuery_h
 #define SpecFileQuery_h
 /* InterSpec: an application to analyze spectral gamma radiation data.
@@ -31,7 +32,6 @@
 #include <atomic>
 #include <iostream>
 
-#include <boost/any.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 
 struct SpecFileInfoToQuery;

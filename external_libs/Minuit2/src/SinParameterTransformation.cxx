@@ -1,3 +1,4 @@
+#include <any>
 // @(#)root/minuit2:$Id$
 // Authors: M. Winkler, F. James, L. Moneta, A. Zsenei, E.G.P. Bos   2003-2017
 

@@ -1,3 +1,4 @@
+#include <any>
 #ifndef PeakEdit_h
 #define PeakEdit_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

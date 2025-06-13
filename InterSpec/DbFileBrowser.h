@@ -1,3 +1,4 @@
+#include <any>
 #ifndef DbFileBrowser_h
 #define DbFileBrowser_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

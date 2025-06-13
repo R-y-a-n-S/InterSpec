@@ -1,3 +1,4 @@
+#include <any>
 #ifndef SpectraFileModel_h
 #define SpectraFileModel_h
 /* InterSpec: an application to analyze spectral gamma radiation data.
@@ -34,7 +35,6 @@
 #include <string>
 #include <sstream>
 
-#include <boost/any.hpp>
 
 #include <Wt/WString>
 #include <Wt/Dbo/Dbo>

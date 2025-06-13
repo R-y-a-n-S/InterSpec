@@ -1,3 +1,4 @@
+#include <any>
 #ifndef BatchGuiWidget_h
 #define BatchGuiWidget_h
 

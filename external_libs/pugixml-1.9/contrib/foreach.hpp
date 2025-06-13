@@ -1,3 +1,4 @@
+#include <any>
 /*
  * Boost.Foreach support for pugixml classes.
  * This file is provided to the public domain.

@@ -1,3 +1,4 @@
+#include <any>
 // @(#)root/minuit2:$Id$
 // Author: L. Moneta Wed Oct 18 11:48:00 2006
 

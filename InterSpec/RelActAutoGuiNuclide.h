@@ -1,3 +1,4 @@
+#include <any>
 #ifndef RelActAutoGuiNuclide_h
 #define RelActAutoGuiNuclide_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

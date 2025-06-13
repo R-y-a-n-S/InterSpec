@@ -1,3 +1,4 @@
+#include <any>
 #ifndef SHOW_RIID_INSTRUMENTS_ANA_h
 #define SHOW_RIID_INSTRUMENTS_ANA_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

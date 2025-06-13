@@ -1,3 +1,4 @@
+#include <any>
 #ifndef HelpSystem_h
 #define HelpSystem_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

@@ -1,3 +1,4 @@
+#include <any>
 // value_test.cpp : main project file.
 
 #include "stdafx.h"

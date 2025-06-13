@@ -1,3 +1,4 @@
+#include <any>
 #ifndef EnergyCalGraphical_h
 #define EnergyCalGraphical_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

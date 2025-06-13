@@ -1,3 +1,4 @@
+#include <any>
 /** \file mpIPrecedence.h
     \brief Definition of base classes needed for parser operator definitions.
 

@@ -1,3 +1,4 @@
+#include <any>
 /* InterSpec: an application to analyze spectral gamma radiation data.
  
  Copyright 2018 National Technology & Engineering Solutions of Sandia, LLC
@@ -32,7 +33,6 @@
 #include <exception>
 #include <sys/stat.h>
 
-#include <boost/any.hpp>
 
 #include <Wt/WPen>
 #include <Wt/WText>

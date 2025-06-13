@@ -1,3 +1,4 @@
+#include <any>
 #ifndef RelActCalcManual_h
 #define RelActCalcManual_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

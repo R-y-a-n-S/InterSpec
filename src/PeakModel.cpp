@@ -1,3 +1,4 @@
+#include <any>
 /* InterSpec: an application to analyze spectral gamma radiation data.
  
  Copyright 2018 National Technology & Engineering Solutions of Sandia, LLC
@@ -41,7 +42,6 @@
 // Block out some warnings occurring in boost files.
 #pragma warning(disable:4244)  // warning C4244: 'initializing' : conversion from 'std::streamoff' to 'size_t', possible loss of data
 
-#include <boost/any.hpp>
 #include <boost/tokenizer.hpp>
 
 #include "SandiaDecay/SandiaDecay.h"

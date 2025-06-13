@@ -1,3 +1,4 @@
+#include <any>
 // @(#)root/mathcore:$Id$
 // Authors: L. Moneta    11/2006
 

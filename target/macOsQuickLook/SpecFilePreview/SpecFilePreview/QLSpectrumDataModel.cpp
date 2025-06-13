@@ -1,3 +1,4 @@
+#include <any>
 
 #include <vector>
 #include <memory>
@@ -7,7 +8,6 @@
 // Disable streamsize <=> size_t warnings in boost
 #pragma warning(disable:4244)
 
-#include <boost/any.hpp>
 
 #include <Wt/WSignal>
 #include <Wt/WString>

@@ -1,3 +1,4 @@
+#include <any>
 #ifndef RemoteRid_h
 #define RemoteRid_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

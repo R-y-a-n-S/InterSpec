@@ -1,3 +1,4 @@
+#include <any>
 /*
 	partview.cpp
 		Partition viewer for Cuba

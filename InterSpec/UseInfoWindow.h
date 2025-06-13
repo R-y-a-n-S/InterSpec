@@ -1,3 +1,4 @@
+#include <any>
 #ifndef UseInfoWindow_h
 #define UseInfoWindow_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

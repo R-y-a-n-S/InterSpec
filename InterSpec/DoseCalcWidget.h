@@ -1,3 +1,4 @@
+#include <any>
 #ifndef DoseCalcWidget_h
 #define DoseCalcWidget_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

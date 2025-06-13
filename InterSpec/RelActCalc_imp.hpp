@@ -1,3 +1,4 @@
+#include <any>
 #ifndef RelActCalc_imp_hpp
 #define RelActCalc_imp_hpp
 /* InterSpec: an application to analyze spectral gamma radiation data.

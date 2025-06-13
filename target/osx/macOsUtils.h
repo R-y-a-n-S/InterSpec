@@ -1,3 +1,4 @@
+#include <any>
 #ifndef MacOsUtils_h
 #define MacOsUtils_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

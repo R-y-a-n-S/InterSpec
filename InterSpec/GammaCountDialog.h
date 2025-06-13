@@ -1,3 +1,4 @@
+#include <any>
 #ifndef GammaCountDialog_h
 #define GammaCountDialog_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

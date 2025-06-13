@@ -1,3 +1,4 @@
+#include <any>
 #ifndef WX_INTERSPEC_UTILS_h
 #define WX_INTERSPEC_UTILS_h
 /* SpecUtils: a library to parse, save, and manipulate gamma spectrum data files.

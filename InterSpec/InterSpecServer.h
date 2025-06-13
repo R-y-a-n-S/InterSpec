@@ -1,3 +1,4 @@
+#include <any>
 #ifndef InterSpecServer_hpp
 #define InterSpecServer_hpp
 /* InterSpec: an application to analyze spectral gamma radiation data.

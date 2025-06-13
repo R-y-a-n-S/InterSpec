@@ -1,3 +1,4 @@
+#include <any>
 #ifndef NativeFloatSpinBox_h
 #define NativeFloatSpinBox_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

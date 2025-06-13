@@ -1,3 +1,4 @@
+#include <any>
 #ifndef ColorThemeWidget_h
 #define ColorThemeWidget_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

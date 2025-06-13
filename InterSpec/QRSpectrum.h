@@ -1,3 +1,4 @@
+#include <any>
 #ifndef QRSpecDev_H
 #define QRSpecDev_H
 /* InterSpec: an application to analyze spectral gamma radiation data.

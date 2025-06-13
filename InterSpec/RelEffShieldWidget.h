@@ -1,3 +1,4 @@
+#include <any>
 #ifndef RelEffShieldWidget_H
 #define RelEffShieldWidget_H
 

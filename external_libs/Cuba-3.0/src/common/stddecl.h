@@ -1,3 +1,4 @@
+#include <any>
 /*
 	stddecl.h
 		declarations common to all Cuba routines

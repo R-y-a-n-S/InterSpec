@@ -1,3 +1,4 @@
+#include <any>
 #ifndef MassAttenuationTool_h
 #define MassAttenuationTool_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

@@ -1,3 +1,4 @@
+#include <any>
 namespace Eigen {
   
   /** To use `Jets<>` in Eigen matrices, `ceres` defines

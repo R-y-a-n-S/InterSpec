@@ -1,3 +1,4 @@
+#include <any>
 #ifndef SearchMode3DModel_H
 #define SearchMode3DModel_H
 /* InterSpec: an application to analyze spectral gamma radiation data.

@@ -1,3 +1,4 @@
+#include <any>
 #ifndef BatchActivity_h
 #define BatchActivity_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

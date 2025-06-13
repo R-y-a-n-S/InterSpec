@@ -1,3 +1,4 @@
+#include <any>
 /* InterSpec: an application to analyze spectral gamma radiation data.
  
  Copyright 2018 National Technology & Engineering Solutions of Sandia, LLC
@@ -31,7 +32,6 @@
 // Disable streamsize <=> size_t warnings in boost
 #pragma warning(disable:4244)
 
-#include <boost/any.hpp>
 
 #include <Wt/WSignal>
 #include <Wt/WString>

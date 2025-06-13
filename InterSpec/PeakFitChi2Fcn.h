@@ -1,3 +1,4 @@
+#include <any>
 #ifndef PeakFitChi2Fcn_h
 #define PeakFitChi2Fcn_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

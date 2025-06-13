@@ -1,3 +1,4 @@
+#include <any>
 #ifndef InterSpec_WEB_FRAME_h
 #define InterSpec_WEB_FRAME_h
 /* SpecUtils: a library to parse, save, and manipulate gamma spectrum data files.

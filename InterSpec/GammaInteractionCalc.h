@@ -1,3 +1,4 @@
+#include <any>
 #ifndef GammaInteractionCalc_h
 #define GammaInteractionCalc_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

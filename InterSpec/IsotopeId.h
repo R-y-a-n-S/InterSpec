@@ -1,3 +1,4 @@
+#include <any>
 #ifndef IsotopeId_h
 #define IsotopeId_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

@@ -1,3 +1,4 @@
+#include <any>
 #include "Minuit2/MnPrint.h"
 
 using ROOT::Minuit2::MnPrint;

@@ -1,3 +1,4 @@
+#include <any>
 #ifndef EnergyCalPreserveWindow_h
 #define EnergyCalPreserveWindow_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

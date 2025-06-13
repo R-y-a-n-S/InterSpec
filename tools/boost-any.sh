@@ -1,27 +1,36 @@
-#!/bin/bash
+#!/usr/bin/env bash
+#
+# Usage: ./tools/boost-any.sh <repo-root>   (defaults to current dir)
+# Runs a comby codemod ONLY on C/C++ source files, skipping build + VCS dirs.
 
-if [ -z "$1" ]; then
-    echo "Usage: $0 <repo_root>"
-    exit 1
-fi
+set -euo pipefail
+ROOT="${1:-.}"
 
-REPO_ROOT="$1"
+# 1. Build a file list -----------------------------------------------
+tmpfile="$(mktemp)"
+find "$ROOT" \
+  -type f \( -name '*.cpp' -o -name '*.cc' -o -name '*.cxx' \
+             -o -name '*.hpp' -o -name '*.hh' -o -name '*.h' \) \
+  -not -path '*/build/*'        \
+  -not -path '*/out/*'          \
+  -not -path '*/.git/*'         \
+  -not -path '*/third_party/*'  \
+  > "$tmpfile"
 
-if [ ! -d "$REPO_ROOT" ]; then
-    echo "Error: Directory $REPO_ROOT does not exist"
-    exit 1
-fi
+# 2. Run replacements -------------------------------------------------
+echo "▶ Replacing boost::any → std::any …"
+comby -in-place -f "$tmpfile" 'boost::any' 'std::any' -matcher .generic
 
-cd "$REPO_ROOT"
+echo "▶ Replacing boost::any_cast → std::any_cast …"
+comby -in-place -f "$tmpfile" 'boost::any_cast' 'std::any_cast' -matcher .generic
 
-comby 'boost::any' 'std::any' .cpp,.h,.hpp -d .
+echo "▶ Removing old include and adding <any> where needed …"
+# Drop the boost header
+sed -i '/#include[[:space:]]*<boost\/any\.hpp>/d' $(cat "$tmpfile")
 
-comby 'boost::any_cast' 'std::any_cast' .cpp,.h,.hpp -d .
+# Prepend <any> if still missing
+grep -L '#include <any>' $(cat "$tmpfile") \
+  | xargs -r sed -i '1i#include <any>'
 
-comby '#include <boost/any.hpp>' '' .cpp,.h,.hpp -d .
-
-find . -name "*.cpp" -o -name "*.h" -o -name "*.hpp" | xargs grep -l "std::any" | while read file; do
-    if ! grep -q "#include <any>" "$file"; then
-        sed -i '1i#include <any>' "$file"
-    fi
-done
+rm "$tmpfile"
+echo "✅ Codemod complete."

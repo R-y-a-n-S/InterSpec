@@ -1,3 +1,4 @@
+#include <any>
 #ifndef RelActAutoGuiEnergyRange_h
 #define RelActAutoGuiEnergyRange_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

@@ -1,3 +1,4 @@
+#include <any>
 #ifndef SpecFileQueryDbCache_h
 #define SpecFileQueryDbCache_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

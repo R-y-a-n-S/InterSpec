@@ -1,3 +1,4 @@
+#include <any>
 #ifndef InterSpecUser_h
 #define InterSpecUser_h
 /* InterSpec: an application to analyze spectral gamma radiation data.
@@ -29,7 +30,6 @@
 #include <string>
 #include <vector>
 
-#include <boost/any.hpp>
 #include <boost/date_time.hpp>
 
 #include <Wt/Dbo/Dbo>

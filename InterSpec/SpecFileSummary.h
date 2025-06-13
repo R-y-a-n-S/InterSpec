@@ -1,3 +1,4 @@
+#include <any>
 #ifndef SpecFileSummary_h
 #define SpecFileSummary_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

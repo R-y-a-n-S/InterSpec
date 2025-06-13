@@ -1,3 +1,4 @@
+#include <any>
 #ifndef BatchGuiInputFile_h
 #define BatchGuiInputFile_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

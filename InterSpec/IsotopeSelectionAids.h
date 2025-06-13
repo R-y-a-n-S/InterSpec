@@ -1,3 +1,4 @@
+#include <any>
 #ifndef IsotopeSelectionAids_h
 #define IsotopeSelectionAids_h
 /* InterSpec: an application to analyze spectral gamma radiation data.
@@ -28,7 +29,6 @@
 #include <vector>
 #include <string>
 
-#include <boost/any.hpp>
 
 #include <Wt/WModelIndex>
 #include <Wt/WContainerWidget>

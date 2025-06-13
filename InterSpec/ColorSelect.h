@@ -1,3 +1,4 @@
+#include <any>
 #ifndef ColorSelect_h
 #define ColorSelect_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

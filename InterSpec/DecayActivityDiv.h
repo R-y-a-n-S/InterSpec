@@ -1,3 +1,4 @@
+#include <any>
 #ifndef DecayActivityDiv_h
 #define DecayActivityDiv_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

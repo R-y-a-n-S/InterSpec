@@ -1,3 +1,4 @@
+#include <any>
 #ifndef GammaXsGui_h
 #define GammaXsGui_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

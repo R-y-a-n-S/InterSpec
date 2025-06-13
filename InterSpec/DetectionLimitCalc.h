@@ -1,3 +1,4 @@
+#include <any>
 #ifndef DetectionLimitCalc_h
 #define DetectionLimitCalc_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

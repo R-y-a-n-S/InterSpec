@@ -1,3 +1,4 @@
+#include <any>
 #ifndef BatchGuiAnaWidget_h
 #define BatchGuiAnaWidget_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

@@ -1,3 +1,4 @@
+#include <any>
 #ifndef IsotopeNameFilterModel_h
 #define IsotopeNameFilterModel_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

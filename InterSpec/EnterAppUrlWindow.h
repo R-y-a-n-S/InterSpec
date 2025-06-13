@@ -1,3 +1,4 @@
+#include <any>
 #ifndef EnterAppUrlWindow_h
 #define EnterAppUrlWindow_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

@@ -1,3 +1,4 @@
+#include <any>
 #ifndef SpectrumViewerTester_h
 #define SpectrumViewerTester_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

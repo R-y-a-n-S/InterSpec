@@ -1,3 +1,4 @@
+#include <any>
 #include "InterSpec/RefSpectraModel.h"
 #include <Wt/WModelIndex>
 

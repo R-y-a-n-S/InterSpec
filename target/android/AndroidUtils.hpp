@@ -1,3 +1,4 @@
+#include <any>
 #ifndef AndroidUtils_hpp
 #define AndroidUtils_hpp
 /* InterSpec: an application to analyze spectral gamma radiation data.

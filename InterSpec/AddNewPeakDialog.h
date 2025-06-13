@@ -1,3 +1,4 @@
+#include <any>
 #ifndef AddNewPeakDialog_h
 #define AddNewPeakDialog_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

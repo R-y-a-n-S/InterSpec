@@ -1,3 +1,4 @@
+#include <any>
 #ifndef RowStretchTreeView_h
 #define RowStretchTreeView_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

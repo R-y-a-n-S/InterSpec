@@ -1,3 +1,4 @@
+#include <any>
 #ifndef OneOverR2Calc_h
 #define OneOverR2Calc_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

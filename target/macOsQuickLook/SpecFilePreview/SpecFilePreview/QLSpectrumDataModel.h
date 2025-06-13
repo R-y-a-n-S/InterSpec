@@ -1,3 +1,4 @@
+#include <any>
 #ifndef QLSpectrumDataModel_h
 #define QLSpectrumDataModel_h
 
@@ -10,7 +11,6 @@
 #include <vector>
 #include <memory>
 
-#include <boost/any.hpp>
 
 #include <Wt/WSignal>
 #include <Wt/WModelIndex>

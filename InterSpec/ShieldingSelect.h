@@ -1,3 +1,4 @@
+#include <any>
 #ifndef ShieldingSelect_h
 #define ShieldingSelect_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

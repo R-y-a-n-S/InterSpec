@@ -1,3 +1,4 @@
+#include <any>
 #ifndef SimpleDialog_h
 #define SimpleDialog_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

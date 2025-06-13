@@ -1,3 +1,4 @@
+#include <any>
 #ifndef PeakFitUtils_h
 #define PeakFitUtils_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

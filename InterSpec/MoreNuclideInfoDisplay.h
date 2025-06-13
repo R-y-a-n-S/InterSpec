@@ -1,3 +1,4 @@
+#include <any>
 #ifndef MoreNuclideInfoDisplay_h
 #define MoreNuclideInfoDisplay_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

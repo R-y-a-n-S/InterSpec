@@ -1,3 +1,4 @@
+#include <any>
 #ifndef DecayWindow_h
 #define DecayWindow_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

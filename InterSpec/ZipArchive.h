@@ -1,3 +1,4 @@
+#include <any>
 #ifndef ZIP_ARCHIVE_READER_H
 #define ZIP_ARCHIVE_READER_H
 /* InterSpec: an application to analyze spectral gamma radiation data.

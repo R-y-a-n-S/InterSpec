@@ -1,3 +1,4 @@
+#include <any>
 
 #ifdef WX_PRECOMP
   #include "wx/wxprec.h"

@@ -1,3 +1,4 @@
+#include <any>
 #ifndef PeakModel_h
 #define PeakModel_h
 /* InterSpec: an application to analyze spectral gamma radiation data.
@@ -34,7 +35,6 @@
 #include <Wt/Chart/WDataSeries>
 #include <Wt/WAbstractItemModel>
 
-#include <boost/any.hpp>
 
 #include "InterSpec/PeakDef.h"
 

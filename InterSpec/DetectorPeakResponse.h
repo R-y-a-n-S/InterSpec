@@ -1,3 +1,4 @@
+#include <any>
 #ifndef DetectorPeakResponse_h
 #define DetectorPeakResponse_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

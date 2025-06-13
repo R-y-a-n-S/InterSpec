@@ -1,3 +1,4 @@
+#include <any>
 #ifndef FileDragUploadResource_h
 #define FileDragUploadResource_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

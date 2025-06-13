@@ -1,3 +1,4 @@
+#include <any>
 #ifndef XmlUtils_hpp
 #define XmlUtils_hpp
 /* InterSpec: an application to analyze spectral gamma radiation data.

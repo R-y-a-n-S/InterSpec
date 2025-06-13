@@ -1,3 +1,4 @@
+#include <any>
 #ifndef UnitsConverterTool_h
 #define UnitsConverterTool_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

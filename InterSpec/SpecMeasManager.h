@@ -1,3 +1,4 @@
+#include <any>
 #ifndef SpecMeasManager_h
 #define SpecMeasManager_h
 /* InterSpec: an application to analyze spectral gamma radiation data.
@@ -31,7 +32,6 @@
 #include <vector>
 #include <string>
 
-#include <boost/any.hpp>
 #include <boost/asio/deadline_timer.hpp>
 
 #include <Wt/WString>

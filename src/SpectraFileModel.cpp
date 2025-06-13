@@ -1,3 +1,4 @@
+#include <any>
 /* InterSpec: an application to analyze spectral gamma radiation data.
  
  Copyright 2018 National Technology & Engineering Solutions of Sandia, LLC
@@ -41,7 +42,6 @@
 #pragma warning(disable:4244) // warning C4244: 'initializing' : conversion from 'std::streamoff' to 'size_t', possible loss of data
 #pragma warning(disable:4308) // warning C4308: negative integral constant converted to unsigned type
 
-#include <boost/any.hpp>
 #include <boost/system/error_code.hpp>
 
 #include <Wt/WText>

@@ -1,3 +1,4 @@
+#include <any>
 #ifndef SpectrumDataModel_h
 #define SpectrumDataModel_h
 /* InterSpec: an application to analyze spectral gamma radiation data.
@@ -28,7 +29,6 @@
 #include <vector>
 #include <memory>
 
-#include <boost/any.hpp>
 
 #include <Wt/WColor>
 #include <Wt/WSignal>

@@ -1,3 +1,4 @@
+#include <any>
 #ifndef CandidatePeak_GA_h
 #define CandidatePeak_GA_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

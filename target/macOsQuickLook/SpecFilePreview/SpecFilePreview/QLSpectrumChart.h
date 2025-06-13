@@ -1,3 +1,4 @@
+#include <any>
 #ifndef QLSpectrumChart_h
 #define QLSpectrumChart_h
 

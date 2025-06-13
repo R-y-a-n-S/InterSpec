@@ -1,3 +1,4 @@
+#include <any>
 #ifndef TerminalWidget_h
 #define TerminalWidget_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

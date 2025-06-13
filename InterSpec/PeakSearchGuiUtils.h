@@ -1,3 +1,4 @@
+#include <any>
 #ifndef AssignPeaksToRefLine_h
 #define AssignPeaksToRefLine_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

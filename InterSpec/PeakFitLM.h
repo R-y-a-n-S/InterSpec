@@ -1,3 +1,4 @@
+#include <any>
 #ifndef PeakFitLM_h
 #define PeakFitLM_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

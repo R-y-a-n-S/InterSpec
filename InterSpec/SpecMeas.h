@@ -1,3 +1,4 @@
+#include <any>
 #ifndef SpecMeas_h
 #define SpecMeas_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

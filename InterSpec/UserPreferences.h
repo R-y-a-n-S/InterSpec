@@ -1,3 +1,4 @@
+#include <any>
 #ifndef UserPrefernces_h
 #define UserPrefernces_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

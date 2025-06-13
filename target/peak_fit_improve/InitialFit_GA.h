@@ -1,3 +1,4 @@
+#include <any>
 #ifndef InitialFit_GA_GA_h
 #define InitialFit_GA_GA_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

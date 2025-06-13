@@ -1,3 +1,4 @@
+#include <any>
 #ifndef GadrasGamFileParser_h
 #define GadrasGamFileParser_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

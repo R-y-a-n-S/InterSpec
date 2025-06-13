@@ -1,3 +1,4 @@
+#include <any>
 #ifndef PopupDiv_h
 #define PopupDiv_h
 /* InterSpec: an application to analyze spectral gamma radiation data.

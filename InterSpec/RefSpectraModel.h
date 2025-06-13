@@ -1,3 +1,4 @@
+#include <any>
 #ifndef RefSpectraModel_h
 #define RefSpectraModel_h
 
@@ -9,7 +10,6 @@
 #include <vector>
 
 
-#include <boost/any.hpp>
 
 
 class RefSpectraModel : public Wt::WAbstractItemModel
