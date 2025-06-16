@@ -100,18 +100,18 @@ public:
   //  Otherwise the counts for sample=(row-1)/2, and channel=(column-1)/2 will
   //  be returned.
   //  If invalid row/column is specified, or role!=DisplayRole, then an empty
-  //  boost::any() will be returned.  WModelIndex 'parent' should always be
+  //  std::any() will be returned.  WModelIndex 'parent' should always be
   //  invalid (e.g. blank).
-  virtual boost::any data( int row, int column,
+  virtual std::any data( int row, int column,
                            int role = Wt::DisplayRole,
                            const Wt::WModelIndex &parent = Wt::WModelIndex() ) const;
   
   //data(): equivalent to other data() functions.
-  virtual boost::any data( const Wt::WModelIndex &index,
+  virtual std::any data( const Wt::WModelIndex &index,
                            int role = Wt::DisplayRole ) const;
   
   //headerData(): not implemented.
-  virtual boost::any headerData( int section,
+  virtual std::any headerData( int section,
                                  Wt::Orientation orientation = Wt::Horizontal,
                                  int role = Wt::DisplayRole) const;
   

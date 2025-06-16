@@ -290,7 +290,7 @@ public:
       if( !index.isValid() )
         throw runtime_error( "RelActAutoGuiNuclideConstraint::RelActAutoGuiNuclideConstraint() called when no constraint type model index is valid" );
 
-      constraint_type_model->setData( index, boost::any(type), Wt::ItemDataRole::UserRole );
+      constraint_type_model->setData( index, std::any(type), Wt::ItemDataRole::UserRole );
     }//for( const NucConstraintType &type : types )
   }//void setAvaiableConstraintTypes( const std::set<NucConstraintType> &types )
 
@@ -339,12 +339,12 @@ public:
     if( !index.isValid() )
       return NucConstraintType::None;
 
-    const boost::any any_data = model->data( index, Wt::ItemDataRole::UserRole);
+    const std::any any_data = model->data( index, Wt::ItemDataRole::UserRole);
     assert( !any_data.empty() );
     if( any_data.empty() )
       return NucConstraintType::None;
 
-    const NucConstraintType type = boost::any_cast<NucConstraintType>(any_data);
+    const NucConstraintType type = std::any_cast<NucConstraintType>(any_data);
     return type;
   }//NucConstraintType constraintType() const
 

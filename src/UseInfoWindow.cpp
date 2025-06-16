@@ -1331,8 +1331,8 @@ void UseInfoWindow::loadSample( const Wt::WModelIndex index )
   if( !index.isValid() )
     return;
   
-  WString val = boost::any_cast<WString> (m_messageModelSample->data(index.row(), 1, DisplayRole));
-  SpecUtils::ParserType parserType = boost::any_cast<SpecUtils::ParserType> (m_messageModelSample->data(index.row(), 2, UserRole));
+  WString val = std::any_cast<WString> (m_messageModelSample->data(index.row(), 1, DisplayRole));
+  SpecUtils::ParserType parserType = std::any_cast<SpecUtils::ParserType> (m_messageModelSample->data(index.row(), 2, UserRole));
   
   SpecMeasManager* manager = m_viewer->fileManager();
   

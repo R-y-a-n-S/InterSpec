@@ -74,7 +74,7 @@ public:
    and then finally gets the default value from the XML file, and both adds it to the database,
    and returns that answer.
   */
-  static boost::any preferenceValueAny( const std::string &name, InterSpec *viewer );
+  static std::any preferenceValueAny( const std::string &name, InterSpec *viewer );
   
   /** Convenience function to call for #preferenceValueAny */
   template<typename T>
@@ -230,8 +230,8 @@ template<typename T>
 T UserPreferences::preferenceValue( const std::string &name,
                                   InterSpec *viewer )
 {
-  boost::any value = UserPreferences::preferenceValueAny( name, viewer );
-  return boost::any_cast<T>( value );
+  std::any value = UserPreferences::preferenceValueAny( name, viewer );
+  return std::any_cast<T>( value );
 }//preferenceValue(...)
 
 

@@ -707,7 +707,7 @@ int SimpleIsotopeNameFilterModel::columnCount( const Wt::WModelIndex &parent ) c
   return 1;
 }
 
-boost::any SimpleIsotopeNameFilterModel::data( const Wt::WModelIndex &index, int role ) const
+std::any SimpleIsotopeNameFilterModel::data( const Wt::WModelIndex &index, int role ) const
 {
   const int row = index.row();
   const int column = index.column();
@@ -717,7 +717,7 @@ boost::any SimpleIsotopeNameFilterModel::data( const Wt::WModelIndex &index, int
   const int nrows = nnuc + nel;
 
   if( row<0 || row>=nrows || column!=0 )
-    return boost::any();
+    return std::any();
 
 //  if( role == Wt::ToolTipRole )
 //    return WString( "the_tool_tip" );
@@ -726,15 +726,15 @@ boost::any SimpleIsotopeNameFilterModel::data( const Wt::WModelIndex &index, int
   {
     const SandiaDecay::Nuclide *nuc = m_candidatesNuclides[row];
     //we could customize tool tip or display roles here to give more information...
-    return boost::any( WString( nuc->symbol ) );
+    return std::any( WString( nuc->symbol ) );
   }else
   {
     const int elnum = row - nnuc;
     const SandiaDecay::Element *el = m_candidatesElements[elnum];
     //we could customize tool tip or display roles here to give more information...
-    return boost::any( WString( el->symbol ) );
+    return std::any( WString( el->symbol ) );
   }
-}//boost::any SimpleIsotopeNameFilterModel::data( const Wt::WModelIndex &index, int role = Wt::DisplayRole ) const
+}//std::any SimpleIsotopeNameFilterModel::data( const Wt::WModelIndex &index, int role = Wt::DisplayRole ) const
 
 int SimpleIsotopeNameFilterModel::determineAndRemoveIsoLevel( std::string &label )
 {

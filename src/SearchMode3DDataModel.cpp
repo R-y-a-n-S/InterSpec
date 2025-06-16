@@ -69,54 +69,54 @@ int SearchMode3DDataModel::columnCount( const Wt::WModelIndex &parent ) const
 }
   
 
-boost::any SearchMode3DDataModel::data( int row, int column, int role,
+std::any SearchMode3DDataModel::data( int row, int column, int role,
                                         const WModelIndex &parent ) const
 {
   return data( createIndex(row, column, (void*)0), role );
 }
   
   
-boost::any SearchMode3DDataModel::data( const WModelIndex &index,
+std::any SearchMode3DDataModel::data( const WModelIndex &index,
                                         int role ) const
 {
   if( !index.isValid() )
-    return boost::any();
+    return std::any();
     
   const int row = index.row();
   const int column = index.column();
   
   if( role == MarkerBrushColorRole )
-    return boost::any();  //Kevin: you might want to customize the color here, or you could create your own version of WStandardColorMap
+    return std::any();  //Kevin: you might want to customize the color here, or you could create your own version of WStandardColorMap
   else if( role != DisplayRole )
-    return boost::any();
+    return std::any();
     
   //Lets check to make sure data requested is for valid data
   const int nrow = rowCount();
   const int ncolumn = columnCount();
     
   if( row < 0 || column < 0 || row >= nrow || column >= ncolumn )
-    return boost::any();
+    return std::any();
     
   if( row == 0 )  //for row==0, we will return the energy for this column
-    return (column==0 ? boost::any() : boost::any(m_energies[column/2]));
+    return (column==0 ? std::any() : std::any(m_energies[column/2]));
     
   if( column == 0 )  //for column == 0, we will return the time (since measurment started) for this row
-    return boost::any(m_times[row/2]);
+    return std::any(m_times[row/2]);
     
   const int sample = (row-1) / 2;
   const int channel = (column-1) / 2;
     
   if( channel == (m_energies.size()-1) || sample == (m_times.size()-1) )
-    return boost::any( 0.0 );
+    return std::any( 0.0 );
   
   if( channel >= m_energies.size() || sample >= m_times.size() )
-    return boost::any();
+    return std::any();
     
-  return boost::any( m_counts[sample][channel] );
+  return std::any( m_counts[sample][channel] );
 }//data()
   
   
-boost::any SearchMode3DDataModel::headerData( int section,
+std::any SearchMode3DDataModel::headerData( int section,
                                               Orientation orientation,
                                               int role ) const
 {

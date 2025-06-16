@@ -32,7 +32,7 @@
 #include <atomic>
 #include <iostream>
 
-#include <boost/any.hpp>
+
 #include <boost/date_time/posix_time/posix_time.hpp>
 
 #if( BUILD_AS_ELECTRON_APP )

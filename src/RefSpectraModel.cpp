@@ -84,30 +84,30 @@ Wt::WModelIndex RefSpectraModel::index( int row, int column, const Wt::WModelInd
 }//Wt::WModelIndex index(...) const
 
 
-boost::any RefSpectraModel::data( const Wt::WModelIndex &index, int role ) const
+std::any RefSpectraModel::data( const Wt::WModelIndex &index, int role ) const
 {
   if( !index.isValid() )
-    return boost::any();
+    return std::any();
   
   Node *node = getNode( index );
   if( !node )
-    return boost::any();
+    return std::any();
   
   if( role == Wt::DisplayRole )
-    return boost::any( node->name );
+    return std::any( node->name );
   
-  return boost::any();
-}//boost::any data(...) const
+  return std::any();
+}//std::any data(...) const
 
 
-boost::any RefSpectraModel::headerData( int section, Wt::Orientation orientation, int role ) const
+std::any RefSpectraModel::headerData( int section, Wt::Orientation orientation, int role ) const
 {
   if( orientation == Wt::Orientation::Horizontal && role == Wt::DisplayRole ) {
-    return boost::any( Wt::WString::tr("rs-dialog-title") );
+    return std::any( Wt::WString::tr("rs-dialog-title") );
   }
   
-  return boost::any();
-}//boost::any headerData(...) const
+  return std::any();
+}//std::any headerData(...) const
 
 
 void RefSpectraModel::Node::sort_children( Wt::SortOrder order )

@@ -169,7 +169,7 @@ namespace
         int64_t val;
         try
         {
-          val = boost::any_cast<int64_t>( index.data() );
+          val = std::any_cast<int64_t>( index.data() );
           string valstr;
           if( val > 0 )
           {
@@ -1623,7 +1623,7 @@ std::shared_ptr<DetectorPeakResponse> GadrasDetSelect::selectedDetector()
       try
       {
         WAbstractItemModel *m = d->m_detectorSelect->model();
-        const string p = boost::any_cast<std::string>( m->data( currentIndex, 0, Wt::UserRole ) );
+        const string p = std::any_cast<std::string>( m->data( currentIndex, 0, Wt::UserRole ) );
         auto answer = DrfSelect::initAGadrasDetectorFromDirectory( p );
         
         if( p.find("GenericGadrasDetectors") != string::npos )

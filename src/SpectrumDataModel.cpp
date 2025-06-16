@@ -31,7 +31,7 @@
 // Disable streamsize <=> size_t warnings in boost
 #pragma warning(disable:4244)
 
-#include <boost/any.hpp>
+
 
 #include <Wt/WSignal>
 #include <Wt/WString>
@@ -492,7 +492,7 @@ void SpectrumDataModel::yRangeInXRange( const double xMin, const double xMax,
     {
       try
       {
-        const double val = boost::any_cast<double>( data( index( row, column ), DisplayRole ) );
+        const double val = std::any_cast<double>( data( index( row, column ), DisplayRole ) );
         yMax = max( yMax, val );
         yMin = min( yMin, val );
       } catch(...) { }
@@ -553,7 +553,7 @@ double SpectrumDataModel::data( int row, int column ) const
 {
   try
   {
-    return boost::any_cast<double>( data( index( row, column ), DisplayRole ) );
+    return std::any_cast<double>( data( index( row, column ), DisplayRole ) );
   }
   catch(...)
   {
@@ -564,7 +564,7 @@ double SpectrumDataModel::data( int row, int column ) const
 } // double SpectrumDataModel::data( int row, int column ) const
 
 
-boost::any SpectrumDataModel::displayBinValue( int row,
+std::any SpectrumDataModel::displayBinValue( int row,
                                                SpectrumDataModel::ColumnType column ) const
 {
   //Could optimize this function to be a bit more efficient since we no longer
@@ -572,12 +572,12 @@ boost::any SpectrumDataModel::displayBinValue( int row,
   std::shared_ptr<const Measurement> xHist = histUsedForXAxis();
 
   if( !xHist )
-    return boost::any();
+    return std::any();
 
   const size_t nchannel = xHist->num_gamma_channels();
   const int numRows = static_cast<int>(nchannel) / m_rebinFactor;
   if( (row < 0) || (row >= numRows) )
-    return boost::any();
+    return std::any();
 
   const size_t newxAxisFirstBin = std::min( static_cast<size_t>(row * m_rebinFactor), nchannel-1);
   const size_t newxAxisLastBin = std::min( static_cast<size_t>(newxAxisFirstBin + m_rebinFactor - 1), nchannel-1 );
@@ -590,7 +590,7 @@ boost::any SpectrumDataModel::displayBinValue( int row,
     {
       const float xMin = xHist->gamma_channel_lower( newxAxisFirstBin );
       const float xMax = xHist->gamma_channel_upper( newxAxisLastBin );
-      return boost::any(0.5*(xMax+xMin));
+      return std::any(0.5*(xMax+xMin));
     }
       
     case DATA_COLUMN:        hist = m_data;       break;
@@ -599,7 +599,7 @@ boost::any SpectrumDataModel::displayBinValue( int row,
   }//switch( column )
 
   if( !hist )
-    return boost::any();
+    return std::any();
   
   double integral = 0.0;
   const vector<float> &channel_contents = *(hist->gamma_channel_contents());
@@ -661,14 +661,14 @@ boost::any SpectrumDataModel::displayBinValue( int row,
     case BACKGROUND_COLUMN:  integral *= backgroundScaledBy(); break;
   }//switch( column )
 
-  return boost::any( integral );
+  return std::any( integral );
 }//displayBinValue(...)
 
 
-boost::any SpectrumDataModel::data( const WModelIndex &index, int role ) const
+std::any SpectrumDataModel::data( const WModelIndex &index, int role ) const
 {
   if( role != Wt::DisplayRole )
-    return boost::any();
+    return std::any();
 
   const int row    = index.row();
   const int column = index.column();
@@ -682,9 +682,9 @@ boost::any SpectrumDataModel::data( const WModelIndex &index, int role ) const
 
   // Make sure it's within standard bounds.
   if( ( row    < 0 ) || ( row    >= numRows    ) )
-    return boost::any();
+    return std::any();
   if( ( column < 0 ) || ( column >= numColumns ) )
-    return boost::any();
+    return std::any();
 
   if( column == X_AXIS_COLUMN )
     return displayBinValue( row, X_AXIS_COLUMN );
@@ -696,7 +696,7 @@ boost::any SpectrumDataModel::data( const WModelIndex &index, int role ) const
     
     const double value = asNumber( displayBinValue( row, DATA_COLUMN ) )
                          - asNumber( displayBinValue( row, BACKGROUND_COLUMN ) );
-    return boost::any( value );
+    return std::any( value );
   }else if( (column == SECOND_DATA_COLUMN) && !!m_secondData )
   {
     if( !m_backgroundSubtract || m_secondDataOwnAxis || !m_background )
@@ -704,14 +704,14 @@ boost::any SpectrumDataModel::data( const WModelIndex &index, int role ) const
     
     const double value = asNumber( displayBinValue( row, SECOND_DATA_COLUMN ) )
                          - asNumber( displayBinValue( row, BACKGROUND_COLUMN ) );
-    return boost::any( value );
+    return std::any( value );
   }else if( (column == BACKGROUND_COLUMN) && m_background )
   {
     return displayBinValue( row, BACKGROUND_COLUMN );
   }
   
-  return boost::any();
-} //boost::any SpectrumDataModel::data( const WModelIndex &index, int role ) const
+  return std::any();
+} //std::any SpectrumDataModel::data( const WModelIndex &index, int role ) const
 
 
 WModelIndex SpectrumDataModel::index( int row, int column, const WModelIndex & ) const
@@ -757,7 +757,7 @@ bool SpectrumDataModel::columnHasData( int column ) const
 }
 
 
-boost::any SpectrumDataModel::headerData( int section, Orientation orientation, int role ) const
+std::any SpectrumDataModel::headerData( int section, Orientation orientation, int role ) const
 {
   // If orientation is horizontal, the section is a column (histogram) number.
   // If orientation is vertical,   the section is a row    (bin)       number.
@@ -821,8 +821,8 @@ boost::any SpectrumDataModel::headerData( int section, Orientation orientation, 
   } // else if( m_background && section == BACKGROUND_COLUMN )
   
   // This should never happen, but just in case.
-  return boost::any();
-} // boost::any SpectrumDataModel::headerData( int section, Orientation orientation, int role ) const
+  return std::any();
+} // std::any SpectrumDataModel::headerData( int section, Orientation orientation, int role ) const
 
 
 void SpectrumDataModel::reset()

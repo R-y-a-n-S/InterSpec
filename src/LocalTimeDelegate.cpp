@@ -73,7 +73,7 @@ WWidget *LocalTimeDelegate::update( WWidget *widget,
         
     try
     {
-      WDateTime val = boost::any_cast<WDateTime>( index.data() );
+      WDateTime val = std::any_cast<WDateTime>( index.data() );
 //WLocalDateTime - not yet implemented by Wt
 //        WLocalDateTime localval( val.date(), val.time(),
 //                                 WLocale::currentLocale() );

@@ -41,7 +41,7 @@
 // Block out some warnings occurring in boost files.
 #pragma warning(disable:4244)  // warning C4244: 'initializing' : conversion from 'std::streamoff' to 'size_t', possible loss of data
 
-#include <boost/any.hpp>
+
 #include <boost/tokenizer.hpp>
 
 #include "SandiaDecay/SandiaDecay.h"
@@ -2015,9 +2015,9 @@ const PeakModel::PeakShrdPtr &PeakModel::peak( const Wt::WModelIndex &index ) co
   return m_sortedPeaks[index.row()];
 }//PeakShrdPtr peak( const Wt::WModelIndex &index ) const
 
-boost::any PeakModel::data( const WModelIndex &index, int role ) const
+std::any PeakModel::data( const WModelIndex &index, int role ) const
 {
-  using boost::any;
+  using std::any;
   
   if( !m_peaks )
     return any();
@@ -2065,7 +2065,7 @@ boost::any PeakModel::data( const WModelIndex &index, int role ) const
   const PeakShrdPtr &peak = m_sortedPeaks[row];
 
   
-  auto getPeakArea = [&peak,this]() -> boost::any {
+  auto getPeakArea = [&peak,this]() -> std::any {
     switch( peak->type() )
     {
       case PeakDef::GaussianDefined:
@@ -2074,13 +2074,13 @@ boost::any PeakModel::data( const WModelIndex &index, int role ) const
       case PeakDef::DataDefined:
       {
         if( !m_foreground )
-          return boost::any();
+          return std::any();
         
         double contArea = 0.0;
         const std::shared_ptr<const SpecUtils::Measurement> &dataH = m_foreground;
         
         if( !dataH )
-          return boost::any();
+          return std::any();
         
         assert( peak->continuum()->energyRangeDefined() );
         const double lowx = peak->lowerX();
@@ -2099,7 +2099,7 @@ boost::any PeakModel::data( const WModelIndex &index, int role ) const
       }//case PeakDef::DataDefined:
     }//switch( peak->type() )
 
-    return boost::any();
+    return std::any();
   };//auto getPeakArea lambda
   
   switch( column )
@@ -2114,16 +2114,16 @@ boost::any PeakModel::data( const WModelIndex &index, int role ) const
           return 2.3548201*peak->sigma();
           
         case PeakDef::DataDefined:
-          return boost::any();
+          return std::any();
       }//switch( peak->type() )
       
     case kAmplitude:
     {
-      boost::any areaAny = getPeakArea();
+      std::any areaAny = getPeakArea();
       if( areaAny.empty() )
         return areaAny;
       
-      const double area = boost::any_cast<double>(areaAny);
+      const double area = std::any_cast<double>(areaAny);
       double uncert = peak->amplitudeUncert();
       
       switch( peak->type() )
@@ -2153,16 +2153,16 @@ boost::any PeakModel::data( const WModelIndex &index, int role ) const
       
     case PeakModel::kCps:
     {
-      boost::any areaAny = getPeakArea();
+      std::any areaAny = getPeakArea();
       
       if( areaAny.empty() )
         return areaAny;
       
-      const double area = boost::any_cast<double>(areaAny);
+      const double area = std::any_cast<double>(areaAny);
       const shared_ptr<const SpecUtils::Measurement> &dataH = m_foreground;
       const float liveTime = dataH ? dataH->live_time() : -1.0f;
       if( liveTime <= 0.0f )
-        return boost::any();
+        return std::any();
       
       const double cps = area / liveTime;
       const double uncert = peak->amplitudeUncert();
@@ -2189,13 +2189,13 @@ boost::any PeakModel::data( const WModelIndex &index, int role ) const
       else if( peak->reaction() )
         return WString( peak->reaction()->name() );
       
-      return boost::any();
+      return std::any();
     }//case kIsotope:
 
     case kDifference:
     {
       if( !peak->hasSourceGammaAssigned() )
-        return boost::any();
+        return std::any();
       
       try
       {
@@ -2205,14 +2205,14 @@ boost::any PeakModel::data( const WModelIndex &index, int role ) const
         return WString( text );
       }catch( std::exception & )
       {
-        return boost::any();
+        return std::any();
       }
     }
       
     case kPhotoPeakEnergy:
     {
       if( !peak->hasSourceGammaAssigned() )
-        return boost::any();
+        return std::any();
       
       try
       {
@@ -2244,7 +2244,7 @@ boost::any PeakModel::data( const WModelIndex &index, int role ) const
         return WString( text );
       }catch( std::exception & )
       {
-        return boost::any();
+        return std::any();
       }
     }//case kPhotoPeakEnergy:
 
@@ -2258,19 +2258,19 @@ boost::any PeakModel::data( const WModelIndex &index, int role ) const
         case PeakDef::NormalGamma:
         case PeakDef::XrayGamma:
           if( !peak->nuclearTransition() || !peak->parentNuclide() || (peak->decayParticleIndex() < 0) )
-            return boost::any();
+            return std::any();
           break;
           
         case PeakDef::AnnihilationGamma:
           // Annihilation gammas wont have a nuclearTransition or decay particle index associated with them
           if( !peak->parentNuclide() )
-            return boost::any();
+            return std::any();
           break;
         
         case PeakDef::SingleEscapeGamma:
         case PeakDef::DoubleEscapeGamma:
           // Don't show "use for shielding/source fit" checkbox for single and double escape peaks
-          return boost::any();
+          return std::any();
           break;
       }//switch( peak->sourceGammaType() )
       
@@ -2281,7 +2281,7 @@ boost::any PeakModel::data( const WModelIndex &index, int role ) const
     {
       const bool fixed_mean = !peak->fitFor(PeakDef::CoefficientType::Mean);
       if( fixed_mean )
-        return boost::any();
+        return std::any();
       return peak->useForEnergyCalibration();
     }
       
@@ -2292,13 +2292,13 @@ boost::any PeakModel::data( const WModelIndex &index, int role ) const
         case PeakDef::NormalGamma:
         case PeakDef::AnnihilationGamma:
           if( !peak->parentNuclide() && !peak->reaction() )
-            return boost::any();
+            return std::any();
           break;
           
         case PeakDef::XrayGamma:
         case PeakDef::SingleEscapeGamma:
         case PeakDef::DoubleEscapeGamma:
-          return boost::any();
+          return std::any();
           break;
       }//switch( peak->sourceGammaType() )
       
@@ -2308,15 +2308,15 @@ boost::any PeakModel::data( const WModelIndex &index, int role ) const
     case kPeakLineColor:
     {
       if( peak->lineColor().isDefault() )
-        return boost::any();
-      return boost::any( WString::fromUTF8(peak->lineColor().cssText(false)) );
+        return std::any();
+      return std::any( WString::fromUTF8(peak->lineColor().cssText(false)) );
     }//case kPeakLineColor:
       
     case kUserLabel:
     {
       if( peak->userLabel().empty() )
-        return boost::any();
-      return boost::any( WString::fromUTF8(peak->userLabel()) );
+        return std::any();
+      return std::any( WString::fromUTF8(peak->userLabel()) );
     }//case kUserLabel:
       
     case kHasSkew:
@@ -2378,7 +2378,7 @@ boost::any PeakModel::data( const WModelIndex &index, int role ) const
     case kRoiCounts:
     {
       if( !m_foreground )
-        return boost::any();
+        return std::any();
       
       assert( peak->continuum()->energyRangeDefined() );
       const double lowx = peak->lowerX();
@@ -2395,7 +2395,7 @@ boost::any PeakModel::data( const WModelIndex &index, int role ) const
   }//switch( section )
 
   return any();
-}//boost::any PeakModel::data( const WModelIndex &index, int role ) const
+}//std::any PeakModel::data( const WModelIndex &index, int role ) const
 
 
 
@@ -2753,7 +2753,7 @@ PeakModel::SetGammaSource PeakModel::setNuclideXrayReaction( PeakDef &peak,
 
 
 bool PeakModel::setData( const WModelIndex &index,
-                         const boost::any &value, int role )
+                         const std::any &value, int role )
 {
   if( !m_peaks )
     throw runtime_error( "Set a primary spectrum before setting peak data" );
@@ -2816,7 +2816,7 @@ bool PeakModel::setData( const WModelIndex &index,
 
     try
     {
-      txt_val = boost::any_cast<WString>( value );
+      txt_val = std::any_cast<WString>( value );
     }catch(...)
     {}
 
@@ -2855,10 +2855,10 @@ bool PeakModel::setData( const WModelIndex &index,
           
           // There could be some rounding in the string representation of the uncertainty, or the
           //  area so lets avoid this if the user hasnt changed that part of it
-          const boost::any prevData = data( index, role );
+          const std::any prevData = data( index, role );
           if( !prevData.empty() )
           {
-            WString prevDataWstr = boost::any_cast<WString>( prevData );
+            WString prevDataWstr = std::any_cast<WString>( prevData );
             
             assert( row < m_sortedPeaks.size() );
             const PeakShrdPtr &peak = m_sortedPeaks[row];
@@ -3143,7 +3143,7 @@ bool PeakModel::setData( const WModelIndex &index,
       {
         try
         {
-          const vector<PeakDef::CandidateNuclide> candidates = boost::any_cast< vector<PeakDef::CandidateNuclide> >( value );
+          const vector<PeakDef::CandidateNuclide> candidates = std::any_cast< vector<PeakDef::CandidateNuclide> >( value );
           new_peak.setCandidateNuclides( candidates );
         }catch(...)
         {
@@ -3157,13 +3157,13 @@ bool PeakModel::setData( const WModelIndex &index,
       {
         try
         {
-          const bool use = boost::any_cast<bool>( value );
+          const bool use = std::any_cast<bool>( value );
           
 //          cerr << "useForShieldingSourceFit=" << use << " type="
 //               << value.type().name() << endl;
-//          boost::any myfalsebool( bool(false) ), mytrueebool( bool(true) );
-//          cerr << "myfalsebool value=" << boost::any_cast<bool>( myfalsebool)
-//               << " mytrueebool value=" << boost::any_cast<bool>( mytrueebool)
+//          std::any myfalsebool( bool(false) ), mytrueebool( bool(true) );
+//          cerr << "myfalsebool value=" << std::any_cast<bool>( myfalsebool)
+//               << " mytrueebool value=" << std::any_cast<bool>( mytrueebool)
 //               << " and typename=" << myfalsebool.type().name() << endl;
           if( use && !new_peak.parentNuclide() )
             passMessage( WString::tr("pm-err-use-fit-no-nuc"), WarningWidget::WarningMsgHigh );
@@ -3189,7 +3189,7 @@ bool PeakModel::setData( const WModelIndex &index,
       {
         try
         {
-          const bool use = boost::any_cast<bool>( value );
+          const bool use = std::any_cast<bool>( value );
           if( use && !new_peak.xrayElement() && !new_peak.parentNuclide()
               && !new_peak.reaction() )
             passMessage( WString::tr("pm-err-use-cal-no-nuc"), WarningWidget::WarningMsgHigh );
@@ -3211,7 +3211,7 @@ bool PeakModel::setData( const WModelIndex &index,
       {
         try
         {
-          const bool use = boost::any_cast<bool>( value );
+          const bool use = std::any_cast<bool>( value );
           
           if( use )
           {
@@ -3356,7 +3356,7 @@ WModelIndex PeakModel::index( int row, int column, const WModelIndex & ) const
 
 
 
-boost::any PeakModel::headerData( int section, Orientation orientation, int role ) const
+std::any PeakModel::headerData( int section, Orientation orientation, int role ) const
 {
   //When orientation is Horizontal, section is a column number,
   //  when orientation is Vertical, section is a row (peak) number.
@@ -3370,61 +3370,61 @@ boost::any PeakModel::headerData( int section, Orientation orientation, int role
     //If we are here, we want the column title
     switch( section )
     {
-      case kMean:           return boost::any( WString::tr("Mean") );
-      case kFwhm:           return boost::any( WString::tr("FWHM") ); //\x03C3
-      case kAmplitude:      return boost::any( WString::tr("Area") );
-      case kCps:            return boost::any( WString::tr("CPS") );
-      case kIsotope:        return boost::any( WString::tr("Nuclide") );
-      case kPhotoPeakEnergy:return boost::any( WString::tr("Photopeak") );
-      case kDifference:     return boost::any( WString::tr("pm-hdr-diff") );
-      case kUseForShieldingSourceFit: return boost::any( WString::tr("Use") );
-      case kCandidateIsotopes:  return boost::any();
-      case kUseForCalibration:  return boost::any( WString::tr("pm-hdr-cal-peak") );
-      case kUseForManualRelEff: return boost::any( WString::tr("pm-hdr-rel-act") );
-      case kUserLabel:      return boost::any( WString::tr("pm-hdr-label") );
-      case kPeakLineColor:  return boost::any( WString::tr("pm-hdr-color") );
-      case kHasSkew:        return boost::any( WString::tr("Skew") );
-      case kSkewAmount:     return boost::any( WString::tr("pm-hdr-skew-amp") );
-      case kType:           return boost::any( WString::tr("pm-hdr-peak-type") );
-      case kLowerX:         return boost::any( WString::tr("pm-hdr-low-energy") );
-      case kUpperX:         return boost::any( WString::tr("pm-hdr-up-energy") );
-      case kRoiCounts:      return boost::any( WString::tr("pm-hdr-roi-counts") );
-      case kContinuumType:  return boost::any( WString::tr("cont-type") );
-      case kNumColumns:     return boost::any();
+      case kMean:           return std::any( WString::tr("Mean") );
+      case kFwhm:           return std::any( WString::tr("FWHM") ); //\x03C3
+      case kAmplitude:      return std::any( WString::tr("Area") );
+      case kCps:            return std::any( WString::tr("CPS") );
+      case kIsotope:        return std::any( WString::tr("Nuclide") );
+      case kPhotoPeakEnergy:return std::any( WString::tr("Photopeak") );
+      case kDifference:     return std::any( WString::tr("pm-hdr-diff") );
+      case kUseForShieldingSourceFit: return std::any( WString::tr("Use") );
+      case kCandidateIsotopes:  return std::any();
+      case kUseForCalibration:  return std::any( WString::tr("pm-hdr-cal-peak") );
+      case kUseForManualRelEff: return std::any( WString::tr("pm-hdr-rel-act") );
+      case kUserLabel:      return std::any( WString::tr("pm-hdr-label") );
+      case kPeakLineColor:  return std::any( WString::tr("pm-hdr-color") );
+      case kHasSkew:        return std::any( WString::tr("Skew") );
+      case kSkewAmount:     return std::any( WString::tr("pm-hdr-skew-amp") );
+      case kType:           return std::any( WString::tr("pm-hdr-peak-type") );
+      case kLowerX:         return std::any( WString::tr("pm-hdr-low-energy") );
+      case kUpperX:         return std::any( WString::tr("pm-hdr-up-energy") );
+      case kRoiCounts:      return std::any( WString::tr("pm-hdr-roi-counts") );
+      case kContinuumType:  return std::any( WString::tr("cont-type") );
+      case kNumColumns:     return std::any();
     }//switch( section )
   } //DisplayRole
   else if (role == ToolTipRole)
   {
     switch( section )
     {
-      case kMean:           return boost::any( WString::tr("pm-hdr-tt-mean") );
-      case kFwhm:           return boost::any( WString::tr("pm-hdr-tt-fwhm") ); //\x03C3
-      case kAmplitude:      return boost::any( WString::tr("pm-hdr-tt-amp") );
-      case kCps:            return boost::any( WString::tr("pm-hdr-tt-cps") );
-      case kIsotope:        return boost::any();
-      case kPhotoPeakEnergy:return boost::any( WString::tr("pm-hdr-tt-photopeak-energy") );
-      case kDifference:     return boost::any( WString::tr("pm-hdr-tt-diff") );
-      case kUseForShieldingSourceFit: return boost::any();
-      case kCandidateIsotopes:  return boost::any();
-      case kUseForCalibration:  return boost::any();
-      case kUseForManualRelEff: return boost::any( WString::tr("pm-hdr-tt-man-rel-eff") );
-      case kPeakLineColor:     return boost::any( WString::tr("pm-hdr-tt-color") );
-      case kUserLabel:         return boost::any( WString::tr("pm-hdr-tt-label") );
-      case kRoiCounts:         return boost::any( WString::tr("pm-hdr-tt-roi-counts") );
+      case kMean:           return std::any( WString::tr("pm-hdr-tt-mean") );
+      case kFwhm:           return std::any( WString::tr("pm-hdr-tt-fwhm") ); //\x03C3
+      case kAmplitude:      return std::any( WString::tr("pm-hdr-tt-amp") );
+      case kCps:            return std::any( WString::tr("pm-hdr-tt-cps") );
+      case kIsotope:        return std::any();
+      case kPhotoPeakEnergy:return std::any( WString::tr("pm-hdr-tt-photopeak-energy") );
+      case kDifference:     return std::any( WString::tr("pm-hdr-tt-diff") );
+      case kUseForShieldingSourceFit: return std::any();
+      case kCandidateIsotopes:  return std::any();
+      case kUseForCalibration:  return std::any();
+      case kUseForManualRelEff: return std::any( WString::tr("pm-hdr-tt-man-rel-eff") );
+      case kPeakLineColor:     return std::any( WString::tr("pm-hdr-tt-color") );
+      case kUserLabel:         return std::any( WString::tr("pm-hdr-tt-label") );
+      case kRoiCounts:         return std::any( WString::tr("pm-hdr-tt-roi-counts") );
       case kHasSkew:
       case kSkewAmount:
       case kType:
       case kLowerX:
       case kUpperX:
       case kContinuumType:
-      case kNumColumns:     return boost::any();
+      case kNumColumns:     return std::any();
     }//switch( section )
     
   } //ToolTipRole
   else if( (orientation != Horizontal) || (role != DisplayRole) )
     return WAbstractItemModel::headerData( section, orientation, role );
 
-  return boost::any();
+  return std::any();
 }//any headerData( int section, Orientation orientation, int role ) const
 
 

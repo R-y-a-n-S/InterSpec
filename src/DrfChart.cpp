@@ -234,7 +234,7 @@ void DrfChart::updateChart( std::shared_ptr<const DetectorPeakResponse> det )
         //Skip any points outside where we would expect.
         if( IsNan(efficiency) || IsInf(efficiency) || efficiency < 0.0f )
         {
-          m_efficiencyModel->setData(row, 1, boost::any() );
+          m_efficiencyModel->setData(row, 1, std::any() );
         }else
         {
           ++nValidPoints;
