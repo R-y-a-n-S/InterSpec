@@ -29,7 +29,7 @@
 #include <string>
 #include <vector>
 
-
+#include <boost/any.hpp>
 #include <boost/date_time.hpp>
 
 #include <Wt/Dbo/Dbo>
@@ -197,7 +197,7 @@ public:
   std::string m_value;
   
   //value(): throws runtime_error if m_name or m_value is empty;
-  std::any value() const;
+  boost::any value() const;
   
   template<class Action>
   void persist( Action &a )

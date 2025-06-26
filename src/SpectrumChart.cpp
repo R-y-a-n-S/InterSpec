@@ -28,7 +28,7 @@
 #include <string>
 #include <algorithm>
 
-
+#include <boost/any.hpp>
 #include <boost/functional/hash.hpp>
 
 #include <Wt/WFont>
@@ -2382,7 +2382,7 @@ void SpectrumChart::paintHighlightRegions( Wt::WPainter &painter ) const
 
 void SpectrumChart::paintNonGausPeak( const PeakDef &peak, Wt::WPainter& painter ) const
 {
-  using std::any_cast;
+  using boost::any_cast;
 
   if( peak.type() != PeakDef::DataDefined )
     return;
@@ -2482,7 +2482,7 @@ void SpectrumChart::paintNonGausPeak( const PeakDef &peak, Wt::WPainter& painter
     
     const double lowerx = std::max( rowLowX, axisMinX );
     const double upperx = std::min( rowUpperX, axisMaxX );
-    const std::any dataheightany = th1Model->displayBinValue( row, SpectrumDataModel::DATA_COLUMN );
+    const boost::any dataheightany = th1Model->displayBinValue( row, SpectrumDataModel::DATA_COLUMN );
     const double contheight = continuum->offset_integral( rowLowX, rowUpperX, data );
     const double dataheight = asNumber( dataheightany );
     
@@ -3505,7 +3505,7 @@ void SpectrumChart::paintGausPeaks( const vector<std::shared_ptr<const PeakDef> 
 
 void SpectrumChart::paintPeaks( Wt::WPainter& painter ) const
 {
-  using std::any_cast;
+  using boost::any_cast;
   
   if( !m_peakModel )
     return;

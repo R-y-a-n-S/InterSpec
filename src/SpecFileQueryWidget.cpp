@@ -467,13 +467,13 @@ namespace
       if( !m_model )
         return;
       
-      std::any description = m_model->headerData(0, Horizontal, Wt::UserRole);
+      boost::any description = m_model->headerData(0, Horizontal, Wt::UserRole);
       response.out() << asString(description).toUTF8() << "\r\n";
       
       const int ncol = m_model->columnCount();
       for( int col = 0; col < ncol; ++col )
       {
-        const std::any title = m_model->headerData( col, Horizontal, DisplayRole );
+        const boost::any title = m_model->headerData( col, Horizontal, DisplayRole );
         const WString titlestr = Wt::asString( title );
         string titlestr_utf8 = titlestr.toUTF8();
         
@@ -518,7 +518,7 @@ namespace
       {
         for( int col = 0; col < ncol; ++col )
         {
-          const std::any txt = m_model->data( row, col, Wt::DisplayRole /* (col==FileDataField::Filename ? UserRole : DisplayRole)*/ );
+          const boost::any txt = m_model->data( row, col, Wt::DisplayRole /* (col==FileDataField::Filename ? UserRole : DisplayRole)*/ );
           const WString txtstr = Wt::asString( txt );
           string utf8txt = txtstr.toUTF8();
           
@@ -1011,7 +1011,7 @@ protected:
   std::shared_ptr< vector< vector<string> > > m_result;
   int m_sortcolumn;
   Wt::SortOrder m_sortorder;
-  std::any m_summary;
+  boost::any m_summary;
   std::vector<std::string> m_eventXmlColNames;
   
   
@@ -1272,15 +1272,15 @@ public:
   }
   
   
-  virtual std::any data( const WModelIndex &index, int role = DisplayRole ) const
+  virtual boost::any data( const WModelIndex &index, int role = DisplayRole ) const
   {
     if( !index.isValid() || !m_result )
-      return std::any();
+      return boost::any();
     
     const int row = index.row();
     const int col = index.column();
     if( row < 0 || col < 0 || row >= static_cast<int>(m_result->size()) )
-      return std::any();
+      return boost::any();
     
     if( (col >= NumFileDataFields)
        && ((col - NumFileDataFields) >= static_cast<int>(m_eventXmlColNames.size())) )
@@ -1288,7 +1288,7 @@ public:
 #if( PERFORM_DEVELOPER_CHECKS )
       log_developer_error( __func__, "Unexpected (to large of) column requested (larger than ever expected)" );
 #endif
-      return std::any();
+      return boost::any();
     }
     
     const vector<string> &fields = (*m_result)[row];
@@ -1299,25 +1299,25 @@ public:
         return WString::fromUTF8(SpecUtils::filename(fields[col]));
       if( role == UserRole )
         return WString::fromUTF8(fields[col]);
-      return std::any();
+      return boost::any();
     }
     
     if( role != DisplayRole )
-      return std::any();
+      return boost::any();
     
     if( col >= static_cast<int>(fields.size()) )
     {
 #if( PERFORM_DEVELOPER_CHECKS )
       log_developer_error( __func__, "Unexpected (to large of) column requested we dont have data for" );
 #endif
-      return std::any();
+      return boost::any();
     }
     
     return WString::fromUTF8( fields[col] );
   }//data(...)
   
   
-  virtual bool setHeaderData( int section, Orientation orientation, const std::any &value, int role = EditRole )
+  virtual bool setHeaderData( int section, Orientation orientation, const boost::any &value, int role = EditRole )
   {
     if( section != 0 || orientation != Horizontal || role != Wt::UserRole )
       return false;
@@ -1325,16 +1325,16 @@ public:
     return true;
   }
   
-  virtual std::any headerData( int section, Orientation orientation = Horizontal, int role = DisplayRole ) const
+  virtual boost::any headerData( int section, Orientation orientation = Horizontal, int role = DisplayRole ) const
   {
     if( section < 0 || orientation != Horizontal )
-      return std::any();
+      return boost::any();
     
     if( section == 0 && role == Wt::UserRole )
       return m_summary;
     
     if( role != DisplayRole )
-      return std::any();
+      return boost::any();
     
     if( section >= NumFileDataFields )
     {
@@ -1344,7 +1344,7 @@ public:
 #if( PERFORM_DEVELOPER_CHECKS )
         log_developer_error( __func__, "Unexpected (to large of) column requested for header data" );
 #endif
-        return std::any();
+        return boost::any();
       }
       return WString(m_eventXmlColNames[index]);
     }//if( section >= NumFileDataFields )
@@ -1395,7 +1395,7 @@ public:
       case SpecFileQuery::NumFileDataFields: break;
     }//switch( SpecFileQuery::FileDataField(section) )
       
-    return std::any();
+    return boost::any();
   }//headerData
   
   virtual WModelIndex index(int row, int column, const WModelIndex &parent = WModelIndex() ) const
@@ -2554,7 +2554,7 @@ void SpecFileQueryWidget::finishUpdate( std::shared_ptr< std::vector< std::vecto
     return;
   }
   
-  m_resultmodel->setHeaderData( 0, Horizontal, std::any(WString(description)), Wt::UserRole );
+  m_resultmodel->setHeaderData( 0, Horizontal, boost::any(WString(description)), Wt::UserRole );
   //m_resultmodel->setResult( result );
   m_resultmodel->appendResults( result );
   
@@ -2951,7 +2951,7 @@ void SpecFileQueryWidget::openSelectedFilesParentDir()
   const int row = selected.begin()->row();
   const WModelIndex fn_index = m_resultmodel->index( row, SpecFileQuery::Filename );
   // SpecFileQuery::Filename, with role=UserRole, returns full-path (DisplayRole returns just the name)
-  const std::any fn_any = m_resultmodel->data( fn_index, Wt::UserRole );
+  const boost::any fn_any = m_resultmodel->data( fn_index, Wt::UserRole );
   const std::string filepath = asString(fn_any).toUTF8();
   
   AppUtils::showFileInOsFileBrowser(filepath);
@@ -2970,7 +2970,7 @@ void SpecFileQueryWidget::loadSelected()
   
   const int row = selected.begin()->row();
   WModelIndex findex = m_resultmodel->index( row, SpecFileQuery::Filename );
-  std::any fnany = m_resultmodel->data( findex, Wt::UserRole );
+  boost::any fnany = m_resultmodel->data( findex, Wt::UserRole );
   const std::string filenameandy = asString(fnany).toUTF8();
   
   if( !SpecUtils::is_file(filenameandy) )

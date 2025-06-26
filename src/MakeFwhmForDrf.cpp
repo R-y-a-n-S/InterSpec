@@ -142,10 +142,10 @@ public:
     return WFlags<ItemFlag>(0);
   }
   
-  virtual std::any headerData( int section, Orientation orientation = Horizontal, int role = DisplayRole) const override
+  virtual boost::any headerData( int section, Orientation orientation = Horizontal, int role = DisplayRole) const override
   {
     if( (orientation != Horizontal) || (role != DisplayRole) )
-      return std::any();
+      return boost::any();
     
     switch( Column(section) )
     {
@@ -157,24 +157,24 @@ public:
       case Column::NumColumn: break;
     }
     assert( 0 );
-    return std::any();
+    return boost::any();
   }//headerData(...)
 
   
-  virtual std::any data( const Wt::WModelIndex &index, int role = Wt::DisplayRole ) const override
+  virtual boost::any data( const Wt::WModelIndex &index, int role = Wt::DisplayRole ) const override
   {
     if( !index.isValid()
        || (index.column() < 0) || (index.column() >= static_cast<int>(Column::NumColumn))
        || (index.row() < 0) || (index.row() >= static_cast<int>(m_rows.size())) )
     {
-      return std::any();
+      return boost::any();
     }
     
     if( (Column(index.column()) == Column::UseForFit) && (role != ItemDataRole::CheckStateRole) )
-      return std::any();
+      return boost::any();
     
     if( (Column(index.column()) != Column::UseForFit) && (role != ItemDataRole::DisplayRole) )
-      return std::any();
+      return boost::any();
     
     // Could implement a Wt::ItemDataRole::ToolTipRole
     
@@ -200,14 +200,14 @@ public:
         break;
         
       case Column::UseForFit:
-        return std::any(row.m_use_for_fit);
+        return boost::any(row.m_use_for_fit);
         
       case Column::NumColumn:
         assert( 0 );
         break;
     }//switch( Column(index.column()) )
     
-    return std::any( WString(buffer) );
+    return boost::any( WString(buffer) );
   }//data(...)
   
   
@@ -233,7 +233,7 @@ public:
   }//void set_use( distances[index].second, const bool use_peak )
   
   
-  virtual bool setData( const WModelIndex &index, const std::any &value, int role = EditRole ) override
+  virtual bool setData( const WModelIndex &index, const boost::any &value, int role = EditRole ) override
   {
     if( index.parent().isValid() || (index.row() < 0)
        || (index.row() >= static_cast<int>(m_rows.size()))
@@ -245,11 +245,11 @@ public:
       return false;
     }
     
-    m_rows[index.row()].m_use_for_fit = std::any_cast<bool>(value);
+    m_rows[index.row()].m_use_for_fit = boost::any_cast<bool>(value);
     dataChanged().emit( index, index );
     
     return true;
-  }//bool setData( const WModelIndex &index, const std::any &value, int role = EditRole )
+  }//bool setData( const WModelIndex &index, const boost::any &value, int role = EditRole )
   
   
   static void sortImp( const Column column, const SortOrder order,

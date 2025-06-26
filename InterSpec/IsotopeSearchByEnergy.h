@@ -28,7 +28,7 @@
 #include <vector>
 #include <memory>
 
-
+#include <boost/any.hpp>
 
 #include <Wt/WString>
 #include <Wt/WContainerWidget>

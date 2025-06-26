@@ -25,7 +25,7 @@
 
 #include <string>
 
-
+#include <boost/any.hpp>
 #include <boost/regex.hpp>
 
 #include <Wt/WText>
@@ -384,12 +384,12 @@ PhotopeakDelegate::EditWidget::EditWidget( const Wt::WModelIndex& index,
       const SandiaDecay::Nuclide *nuclide = peak->parentNuclide();
       
       /*
-       std::any iso_any = peakModel->data( peakModel->index( row, PeakModel::kIsotope ) );
-      std::any fitEnergy_any = peakModel->data( peakModel->index( row, PeakModel::kMean ) );
+       boost::any iso_any = peakModel->data( peakModel->index( row, PeakModel::kIsotope ) );
+      boost::any fitEnergy_any = peakModel->data( peakModel->index( row, PeakModel::kMean ) );
       string isotope;
-      try { isotope = std::any_cast<WString>( iso_any ).narrow(); }
+      try { isotope = boost::any_cast<WString>( iso_any ).narrow(); }
       catch(...){ return; }
-      try{ fitEnergy = std::any_cast<double>( fitEnergy_any ); }catch(...){}
+      try{ fitEnergy = boost::any_cast<double>( fitEnergy_any ); }catch(...){}
 
       const SandiaDecay::SandiaDecayDataBase *db = DecayDataBaseServer::database();
       if( !db )
@@ -576,13 +576,13 @@ WWidget *PhotopeakDelegate::update( WWidget *widget,
 }//WWidget *update(...)
 
 
-std::any PhotopeakDelegate::editState( WWidget *editor ) const
+boost::any PhotopeakDelegate::editState( WWidget *editor ) const
 {
   WContainerWidget *w = dynamic_cast<WContainerWidget *>(editor);
   if( !w )
   {
     cerr << "PhotopeakDelegate::editState(...)\n\tLogic error - fix me!" << endl;
-    return std::any();
+    return boost::any();
   }//if( !w )
 
   WLineEdit *lineEdit = dynamic_cast<WLineEdit *>(w->widget(0));
@@ -590,15 +590,15 @@ std::any PhotopeakDelegate::editState( WWidget *editor ) const
   if( !lineEdit )
   {
     cerr << "PhotopeakDelegate::editState(...)\n\tLogic error - fix me!" << endl;
-    return std::any();
+    return boost::any();
   }//if( !lineEdit )
 
-  return std::any( lineEdit->text() );
-}//std::any editState( WWidget *editor ) const
+  return boost::any( lineEdit->text() );
+}//boost::any editState( WWidget *editor ) const
 
 
 void PhotopeakDelegate::setEditState( WWidget *editor,
-                                    const std::any& value ) const
+                                    const boost::any& value ) const
 {
   WContainerWidget *w = dynamic_cast<WContainerWidget *>(editor);
   if( !w )
@@ -617,17 +617,17 @@ void PhotopeakDelegate::setEditState( WWidget *editor,
 
   try
   {
-//    lineEdit->setText( std::any_cast<WT_USTRING>(value) );
-    lineEdit->setText( std::any_cast<WString>(value) );
+//    lineEdit->setText( boost::any_cast<WT_USTRING>(value) );
+    lineEdit->setText( boost::any_cast<WString>(value) );
   }catch(...)
   {
     cerr << "PhotopeakDelegate::setEditState(...)\n\tPossible Logic error - fix me!" << endl;
     lineEdit->setText( "" );
   }//try / catch
-}//void setEditState( WWidget *editor, const std::any& value ) const
+}//void setEditState( WWidget *editor, const boost::any& value ) const
 
 
-void PhotopeakDelegate::setModelData( const std::any& editState,
+void PhotopeakDelegate::setModelData( const boost::any& editState,
                                     WAbstractItemModel *model,
                                     const WModelIndex& index) const
 {
@@ -806,22 +806,22 @@ WString PeakIsotopeNameFilterModel::displayText( const SandiaDecay::Element *ele
 }//WString displayText( const SandiaDecay::Element *el, int role )
 
 
-std::any PeakIsotopeNameFilterModel::data( const Wt::WModelIndex &index, int role ) const
+boost::any PeakIsotopeNameFilterModel::data( const Wt::WModelIndex &index, int role ) const
 {
   const int row = index.row();
   const int column = index.column();
   const int nrows = static_cast<int>( m_displayData.size() );
 
   if( row < 0 || column!=0 || row >= nrows  )
-    return std::any();
+    return boost::any();
 
   if( role == DisplayRole )
     return m_displayData[row];
   else if( role == UserRole )
     return m_userData[row];
   
-  return std::any();
-}//std::any data(..)
+  return boost::any();
+}//boost::any data(..)
 
 
 

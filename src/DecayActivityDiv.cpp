@@ -32,7 +32,7 @@
 #include <exception>
 #include <sys/stat.h>
 
-
+#include <boost/any.hpp>
 
 #include <Wt/WPen>
 #include <Wt/WText>
@@ -129,18 +129,18 @@ public:
   {
   }
   
-  virtual std::any data( const Wt::WModelIndex &index,
+  virtual boost::any data( const Wt::WModelIndex &index,
                           int role = Wt::DisplayRole ) const
   {
     if( index.column() == 0 )
       return WStandardItemModel::data( index, role );
     
-    std::any show = headerData( index.column(), Wt::Horizontal, Wt::UserRole );
+    boost::any show = headerData( index.column(), Wt::Horizontal, Wt::UserRole );
     try
     {
-      const bool doShow = std::any_cast<bool>( show );
+      const bool doShow = boost::any_cast<bool>( show );
       if( !doShow )
-        return std::any();
+        return boost::any();
     }catch( std::exception &e )
     {
       cerr << "DecayActivityModel::data(...) unexpectedly caught: " << e.what()
@@ -151,7 +151,7 @@ public:
 #if( WT_VERSION > 0x3040000 )
     if( role == Wt::DisplayRole )
     {
-      std::any val = WStandardItemModel::data( index, role );
+      boost::any val = WStandardItemModel::data( index, role );
       if( val.empty() )
         return val;
       
@@ -161,7 +161,7 @@ public:
       
       // 0.00001 chosen arbitrarily, but values this small wont show up as non-zero on the chart
       if( valdbl < 0.00001*m_max_activity )
-        return std::any( 0.0 );
+        return boost::any( 0.0 );
       
       return val;
     }//if( role == Wt::DisplayRole )
@@ -173,17 +173,17 @@ public:
   
   void setNuclide( int colum, const std::string nuc )
   {
-    setHeaderData( colum, Wt::Horizontal, std::any(nuc), Wt::UserRole+1 );
+    setHeaderData( colum, Wt::Horizontal, boost::any(nuc), Wt::UserRole+1 );
   }
   
   std::string nuclide( int colum )
   {
     if( colum <= 0 || colum >= columnCount() )
       return "";
-    std::any val = headerData( colum, Wt::Horizontal, Wt::UserRole+1 );
+    boost::any val = headerData( colum, Wt::Horizontal, Wt::UserRole+1 );
     try
     {
-      return std::any_cast<std::string>( val );
+      return boost::any_cast<std::string>( val );
     }catch(...)
     {}
     
@@ -195,10 +195,10 @@ public:
     if( colum <= 0 || colum >= columnCount() )
       return true;
     
-    std::any val = headerData( colum, Wt::Horizontal, Wt::UserRole );
+    boost::any val = headerData( colum, Wt::Horizontal, Wt::UserRole );
     try
     {
-      return std::any_cast<bool>( val );
+      return boost::any_cast<bool>( val );
     }catch(...)
     {}
     
@@ -217,7 +217,7 @@ public:
         if( !showSeries( col ) )
           continue;
         
-        std::any val = WStandardItemModel::data( index(row, col) );
+        boost::any val = WStandardItemModel::data( index(row, col) );
         if( val.empty() )
           continue;
         
@@ -240,7 +240,7 @@ public:
     if( colum < 1 || colum >= columnCount() )
       return;
     
-    setHeaderData( colum, Wt::Horizontal, std::any(show), Wt::UserRole );
+    setHeaderData( colum, Wt::Horizontal, boost::any(show), Wt::UserRole );
     
 #if( WT_VERSION > 0x3040000 )
     updateMaxActivity();
@@ -3119,7 +3119,7 @@ void DecayActivityDiv::refreshDecayDisplay( const bool update_calc )
   try
   {
     if( noldcol > 2 )
-      showsum = std::any_cast<bool>(m_decayModel->headerData(noldcol - 1,
+      showsum = boost::any_cast<bool>(m_decayModel->headerData(noldcol - 1,
                                                 Wt::Horizontal, Wt::UserRole) );
   }catch( std::exception &e )
   {
@@ -3238,7 +3238,7 @@ void DecayActivityDiv::refreshDecayDisplay( const bool update_calc )
     stringstream labelText;
     labelText << fixed << setprecision(3) << (row * dt)/tunit;
     const WString label( labelText.str() );
-    m_decayModel->setData( row, 0, std::any( label ) );
+    m_decayModel->setData( row, 0, boost::any( label ) );
 
     for( int elN = 0; elN < nElements; ++elN )
     {
@@ -3289,22 +3289,22 @@ void DecayActivityDiv::refreshDecayDisplay( const bool update_calc )
 #endif
 //      if( activity >= (0.00001*endActivity) )
       
-      m_decayModel->setData( row, column, std::any( yval ) );
+      m_decayModel->setData( row, column, boost::any( yval ) );
       
       //WString tt = "My Tool Tip";
-      //m_decayModel->setData( row, column, std::any( tt ), ToolTipRole );
+      //m_decayModel->setData( row, column, boost::any( tt ), ToolTipRole );
     }//for( loop over nuclides to add )
   }//for( loop over time points to add )
 
   //Now put in the sum of all the activities
   const WString dateHeader = WString::tr("dad-hdr-date").arg(xUnitsPair.first);
-  m_decayModel->setHeaderData( 0, std::any( dateHeader ) );
+  m_decayModel->setHeaderData( 0, boost::any( dateHeader ) );
 
   for( int column = 1; column <= nElements; ++column )
   {
     const WString name = evolutions[column-1].nuclide->symbol;
     m_decayModel->setNuclide( column, evolutions[column-1].nuclide->symbol ); //duplicating lots here
-    m_decayModel->setHeaderData( column, std::any( name ) );
+    m_decayModel->setHeaderData( column, boost::any( name ) );
     m_decayModel->setHeaderData( column, Wt::Horizontal, true, Wt::UserRole );
   }//for( int column = 0; column < nElements; ++column )
 
@@ -3314,29 +3314,29 @@ void DecayActivityDiv::refreshDecayDisplay( const bool update_calc )
     maxActivity = max( maxActivity, totalActivities[row] );
     minActivity = std::min( minActivity, totalActivities[row] );
     const double data = totalActivities[row];
-    m_decayModel->setData( row, nElements+1, std::any(data) );
+    m_decayModel->setData( row, nElements+1, boost::any(data) );
   }//for( loop over rows )
   
   switch( yaxis )
   {
     case ActivityAxis:
       m_decayModel->setHeaderData( nElements+1,
-                                   std::any( WString::tr("dad-hdr-total-act") ) );
+                                   boost::any( WString::tr("dad-hdr-total-act") ) );
       m_decayChart->axis(Chart::YAxis).setTitle( unitStr );
     break;
     case GammasAxis:
       m_decayModel->setHeaderData( nElements+1,
-                                   std::any( WString::tr("dad-hdr-total-gammas") ) );
+                                   boost::any( WString::tr("dad-hdr-total-gammas") ) );
       m_decayChart->axis(Chart::YAxis).setTitle( WString::tr("dad-yaxis-title-total-gammas") );
     break;
     case BetasAxis:
       m_decayModel->setHeaderData( nElements+1,
-                                   std::any( WString::tr("dad-hdr-total-betas") ) );
+                                   boost::any( WString::tr("dad-hdr-total-betas") ) );
       m_decayChart->axis(Chart::YAxis).setTitle( WString::tr("dad-yaxis-title-total-betas") );
     break;
     case AlphasAxis:
       m_decayModel->setHeaderData( nElements+1,
-                                   std::any( WString::tr("dad-hdr-total-alphas") ) );
+                                   boost::any( WString::tr("dad-hdr-total-alphas") ) );
       m_decayChart->axis(Chart::YAxis).setTitle( WString::tr("dad-yaxis-title-total-alphas") );
     break;
     case NumYAxisType:
@@ -3345,7 +3345,7 @@ void DecayActivityDiv::refreshDecayDisplay( const bool update_calc )
   
   
   m_decayModel->setHeaderData( nElements+1, Wt::Horizontal,
-                                 std::any(showsum), Wt::UserRole );
+                                 boost::any(showsum), Wt::UserRole );
   std::vector<string> nuclidesset;
   for( int column = 1; column <= nElements; ++column )
   {
@@ -3420,7 +3420,7 @@ void DecayActivityDiv::updateYAxisRange()
       if( !m_decayModel->showSeries( col ) )
         continue;
       
-      std::any data = m_decayModel->data( m_decayModel->index(row, col) );
+      boost::any data = m_decayModel->data( m_decayModel->index(row, col) );
       const double yval = asNumber(data);
       if( !IsNan(yval) )
       {

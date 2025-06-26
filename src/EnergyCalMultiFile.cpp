@@ -974,13 +974,13 @@ int EnergyCalMultiFileModel::columnCount( const WModelIndex &parent ) const
 }//columnCount(...)
 
   
-std::any EnergyCalMultiFileModel::data( const Wt::WModelIndex &index, int role ) const
+boost::any EnergyCalMultiFileModel::data( const Wt::WModelIndex &index, int role ) const
 {
   if( (role != Wt::DisplayRole) && (role != Wt::CheckStateRole) )
-    return std::any();
+    return boost::any();
   
   if( !index.isValid() )
-    return std::any();
+    return boost::any();
   
   
   ModelLevel level;
@@ -991,7 +991,7 @@ std::any EnergyCalMultiFileModel::data( const Wt::WModelIndex &index, int role )
   const int col = index.column();
   
   if( (filenum < 0) || (filenum >= static_cast<int>(m_data.size())) )
-    return std::any();
+    return boost::any();
   
   const vector<SamplesPeakInfo_t> &fileinfos = m_data[filenum];
   
@@ -999,28 +999,28 @@ std::any EnergyCalMultiFileModel::data( const Wt::WModelIndex &index, int role )
   switch( level )
   {
     case ModelLevel::Invalid:
-      return std::any();
+      return boost::any();
 
     case ModelLevel::File:
     {
       // Return filename here
       if( (col != 0) || (role != Wt::DisplayRole) )
-        return std::any();
+        return boost::any();
         
       assert( filenum == row );
       
       if( fileinfos.empty() )
-        return std::any();
+        return boost::any();
       
       shared_ptr<SpectraFileHeader> header = get<0>( fileinfos[0] );
       if( !header )
-        return std::any();
+        return boost::any();
       
       Wt::WString value = header->displayName();
       if( value.empty() )
         value = WString::fromUTF8( "File " + std::to_string(filenum) );
       
-      return std::any( value );
+      return boost::any( value );
     }//case ModelLevel::File:
       
       
@@ -1029,10 +1029,10 @@ std::any EnergyCalMultiFileModel::data( const Wt::WModelIndex &index, int role )
       // Return sample numbers + title here
       assert( row == samplesnum );
       if( (col != 0) || (role != Wt::DisplayRole) )
-        return std::any();
+        return boost::any();
       
       if( (samplesnum < 0) || (samplesnum >= static_cast<int>(fileinfos.size())) )
-        return std::any();
+        return boost::any();
       
       const SamplesPeakInfo_t &setinfo = fileinfos[samplesnum];
       
@@ -1070,7 +1070,7 @@ std::any EnergyCalMultiFileModel::data( const Wt::WModelIndex &index, int role )
       //if( title.size() > 80 )
       //  title = title.substr(0,77) + "...";
       
-      return std::any( WString::fromUTF8(title) );
+      return boost::any( WString::fromUTF8(title) );
     }//case ModelLevel::SampleSet:
       
       
@@ -1078,14 +1078,14 @@ std::any EnergyCalMultiFileModel::data( const Wt::WModelIndex &index, int role )
     {
       assert( row == peaknum );
       if( col < 0 || col > 2 )
-        return std::any();
+        return boost::any();
       
       if( (samplesnum < 0) || (samplesnum >= static_cast<int>(fileinfos.size())) )
-        return std::any();
+        return boost::any();
       
       const vector<UsePeakInfo_t> &peakinfos = get<3>(fileinfos[samplesnum]);
       if( (peaknum < 0) || (peaknum >= static_cast<int>(peakinfos.size())) )
-        return std::any();
+        return boost::any();
       
       const bool checked = get<0>(peakinfos[peaknum]);
       shared_ptr<const PeakDef> peak = get<1>(peakinfos[peaknum]);
@@ -1093,35 +1093,35 @@ std::any EnergyCalMultiFileModel::data( const Wt::WModelIndex &index, int role )
       if( role == Wt::CheckStateRole )
       {
         if( col == 0 )
-          return std::any( checked );
-        return std::any();
+          return boost::any( checked );
+        return boost::any();
       }
       
       if( !peak )
-        return std::any();
+        return boost::any();
       
       if( !peak->parentNuclide() && !peak->xrayElement() && !peak->reaction() )
-        return std::any();
+        return boost::any();
       
       if( role == Wt::CheckStateRole )
       {
         if( index.column() == 0 )
-          return std::any( checked );
-        return std::any();
+          return boost::any( checked );
+        return boost::any();
       }
       
       if( col == 0 )
       {
         if( peak->parentNuclide() )
-          return std::any( WString::fromUTF8(peak->parentNuclide()->symbol) );
+          return boost::any( WString::fromUTF8(peak->parentNuclide()->symbol) );
         
         if( peak->xrayElement() )
-          return std::any( WString::fromUTF8(peak->xrayElement()->symbol) );
+          return boost::any( WString::fromUTF8(peak->xrayElement()->symbol) );
         
         if( peak->reaction() )
-          return std::any( WString::fromUTF8(peak->reaction()->name()) );
+          return boost::any( WString::fromUTF8(peak->reaction()->name()) );
         
-        return std::any( WString::fromUTF8("--") );
+        return boost::any( WString::fromUTF8("--") );
       }//if( col == 0 )
       
       char msg[128] = { '\0' };
@@ -1141,21 +1141,21 @@ std::any EnergyCalMultiFileModel::data( const Wt::WModelIndex &index, int role )
         }
       }else
       {
-        return std::any();
+        return boost::any();
       } //if( col == 1 ) / else ...
       
-      return std::any( WString::fromUTF8(msg) );
+      return boost::any( WString::fromUTF8(msg) );
       
       break;
     }//case ModelLevel::Peak:
   }//switch( level )
   
     
-  return std::any();
+  return boost::any();
 }//data(...)
 
 
-bool EnergyCalMultiFileModel::setData( const WModelIndex &index, const std::any &value, int role )
+bool EnergyCalMultiFileModel::setData( const WModelIndex &index, const boost::any &value, int role )
 {
   if( (role != Wt::CheckStateRole) || (index.column() != 0) )
     return false;
@@ -1182,10 +1182,10 @@ bool EnergyCalMultiFileModel::setData( const WModelIndex &index, const std::any 
   
   try
   {
-    get<0>(peakinfos[peaknum]) = std::any_cast<bool>( value );
+    get<0>(peakinfos[peaknum]) = boost::any_cast<bool>( value );
   }catch(...)
   {
-    cerr << "Got bad std::any_cast<bool>( value )" << endl;
+    cerr << "Got bad boost::any_cast<bool>( value )" << endl;
     return false;
   }
   
@@ -1208,20 +1208,20 @@ WFlags<ItemFlag> EnergyCalMultiFileModel::flags( const WModelIndex &index ) cons
 }//flags(...)
 
 
-std::any EnergyCalMultiFileModel::headerData( int section, Wt::Orientation orientation,
+boost::any EnergyCalMultiFileModel::headerData( int section, Wt::Orientation orientation,
                                                 int role ) const
 {
 //  if( role == DisplayRole )
 //  {
 //    switch( section )
 //    {
-//      case 0: return std::any( WString("Nuclide") );
-//      case 1: return std::any( WString("Obs. Energy") );
-//      case 2: return std::any( WString("Photopeak Energy") );
+//      case 0: return boost::any( WString("Nuclide") );
+//      case 1: return boost::any( WString("Obs. Energy") );
+//      case 2: return boost::any( WString("Photopeak Energy") );
 //    }
 //  }//if( role == DisplayRole )
   
-  return std::any();
+  return boost::any();
 }//headerData(...);
 
 

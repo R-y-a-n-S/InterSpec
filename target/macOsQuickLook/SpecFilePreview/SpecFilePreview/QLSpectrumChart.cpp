@@ -7,7 +7,7 @@
 // Disable streamsize <=> size_t warnings in boost
 #pragma warning(disable:4244)
 
-
+#include <boost/any.hpp>
 #include <boost/functional/hash.hpp>
 #include <boost/algorithm/string.hpp>
 
@@ -2406,7 +2406,7 @@ bool QLSpectrumChart::gausPeakDrawRange( int &minrow, int &maxrow,
 
 void QLSpectrumChart::paintNonGausPeak( const QLPeakDef &peak, Wt::WPainter& painter ) const
 {
-  using std::any_cast;
+  using boost::any_cast;
 
   if( peak.type() != QLPeakDef::DataDefined )
     return;
@@ -2505,7 +2505,7 @@ void QLSpectrumChart::paintNonGausPeak( const QLPeakDef &peak, Wt::WPainter& pai
     
     const double lowerx = std::max( rowLowX, axisMinX );
     const double upperx = std::min( rowUpperX, axisMaxX );
-    const std::any dataheightany = th1Model->displayBinValue( row, QLSpectrumDataModel::DATA_COLUMN );
+    const boost::any dataheightany = th1Model->displayBinValue( row, QLSpectrumDataModel::DATA_COLUMN );
     const double contheight = continuum->offset_integral( rowLowX, rowUpperX );
     const double dataheight = asNumber( dataheightany );
     
@@ -3313,7 +3313,7 @@ void QLSpectrumChart::paintGausPeaks( const vector<std::shared_ptr<const QLPeakD
 
 void QLSpectrumChart::paintPeaks( Wt::WPainter& painter ) const
 {
-  using std::any_cast;
+  using boost::any_cast;
   
   if( !m_peaks || m_peaks->empty() )
     return;

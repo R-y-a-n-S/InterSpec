@@ -1662,7 +1662,7 @@ void IsotopeSearchByEnergy::assignSearchedOnPeaksToSelectedNuclide()
     const int peak_row = peak_index.row();
     
     const WModelIndex iso_index = pmodel->index( peak_row, PeakModel::Columns::kIsotope );
-    pmodel->setData( iso_index, std::any(nucstr) );
+    pmodel->setData( iso_index, boost::any(nucstr) );
     
     // PeakModel doesnt know about reference line color, so lets get the color of the reference
     //  lines (which, if previous peaks have been assigned current nuc/el/rctn, then ref lines
@@ -1681,7 +1681,7 @@ void IsotopeSearchByEnergy::assignSearchedOnPeaksToSelectedNuclide()
         if( !color.isDefault() )
         {
           const WModelIndex color_index = pmodel->index( peak_row, PeakModel::Columns::kPeakLineColor );
-          pmodel->setData( color_index, std::any( WString(color.cssText()) ) );
+          pmodel->setData( color_index, boost::any( WString(color.cssText()) ) );
         }
       }else
       {

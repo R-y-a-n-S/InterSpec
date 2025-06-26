@@ -496,8 +496,8 @@ RelActAutoGui::RelActAutoGui( InterSpec *viewer, Wt::WContainerWidget *parent )
   
   auto set_log_y = wApp->bind( boost::bind( &D3SpectrumDisplayDiv::setYAxisLog, m_spectrum, true ) );
   auto set_lin_y = wApp->bind( boost::bind( &D3SpectrumDisplayDiv::setYAxisLog, m_spectrum, false ) );
-  std::function<void (std::any)> logy_fcn = [=](std::any value){
-    if( std::any_cast<bool>(value) )
+  std::function<void (boost::any)> logy_fcn = [=](boost::any value){
+    if( boost::any_cast<bool>(value) )
       set_log_y();
     else
       set_lin_y();

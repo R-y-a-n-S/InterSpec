@@ -524,7 +524,7 @@ bool UserPreferences::setPreferenceValueWorker( const std::string &name,
 }//setPreferenceValueWorker(...)
 
 
-std::any UserPreferences::preferenceValueAny( const std::string &name, InterSpec *viewer )
+boost::any UserPreferences::preferenceValueAny( const std::string &name, InterSpec *viewer )
 {
   // These first few things are just for debug
   //bool from_default = false;
@@ -538,7 +538,7 @@ std::any UserPreferences::preferenceValueAny( const std::string &name, InterSpec
   if( !viewer )
   {
     Dbo::ptr<UserOption> option = getDefaultUserPreference( name, InterSpecUser::DeviceType::Desktop );
-    std::any value = option->value();
+    boost::any value = option->value();
     return value;
   }
   
@@ -568,7 +568,7 @@ std::any UserPreferences::preferenceValueAny( const std::string &name, InterSpec
   self->m_options[name] = def_value;
    
   return def_value->value();
-}//std::any preferenceValue( const std::string &name, InterSpec *viewer );
+}//boost::any preferenceValue( const std::string &name, InterSpec *viewer );
 
 
 
@@ -595,8 +595,8 @@ void UserPreferences::associateWidget( const std::string &name,
    //  but it works for now.
    const string cbid = cb->id();
    
-  std::function<void(std::any)> fcn = [=]( std::any valueAny ){
-    const bool value = std::any_cast<bool>(valueAny);
+  std::function<void(boost::any)> fcn = [=]( boost::any valueAny ){
+    const bool value = boost::any_cast<bool>(valueAny);
     const bool setCbChecked = reverseValue ? !value : value;
     
     // The below doesnt seem to find widgets in AuxWindows (and maybe pop-ups)
@@ -640,8 +640,8 @@ void UserPreferences::associateWidget( Wt::Dbo::ptr<InterSpecUser> user,
   
   const string sbid = sb->id();
   
-  std::function<void(std::any)> fcn = [=]( std::any valueAny ){
-    const double value = std::any_cast<double>(valueAny);
+  std::function<void(boost::any)> fcn = [=]( boost::any valueAny ){
+    const double value = boost::any_cast<double>(valueAny);
   
     auto w = wApp->domRoot()->findById(sbid);
     if( !w && wApp->domRoot2() )
@@ -676,8 +676,8 @@ void UserPreferences::associateWidget( Wt::Dbo::ptr<InterSpecUser> user,
   
   const string sbid = sb->id();
   
-  std::function<void(std::any)> fcn = [=]( std::any valueAny ){
-    const int value = std::any_cast<int>(valueAny);
+  std::function<void(boost::any)> fcn = [=]( boost::any valueAny ){
+    const int value = boost::any_cast<int>(valueAny);
     
     auto w = wApp->domRoot()->findById(sbid);
     if( !w && wApp->domRoot2() )
@@ -722,28 +722,28 @@ void UserPreferences::restoreUserPrefsFromXml( const rapidxml::xml_node<char> *p
       {
         case UserOption::String:
         {
-          const string value = std::any_cast<string>( option->value() );
+          const string value = boost::any_cast<string>( option->value() );
           setPreferenceValueInternal( option->m_name, value, viewer );
           break;
         }//case String
           
         case UserOption::Decimal:
         {
-          const double value = std::any_cast<double>( option->value() );
+          const double value = boost::any_cast<double>( option->value() );
           setPreferenceValueInternal( option->m_name, value, viewer );
           break;
         }//case Decimal
           
         case UserOption::Integer:
         {
-          const int value = std::any_cast<int>( option->value() );
+          const int value = boost::any_cast<int>( option->value() );
           setPreferenceValueInternal( option->m_name, value, viewer );
           break;
         }//case Integer
           
         case UserOption::Boolean:
         {
-          const bool value = std::any_cast<bool>( option->value() );
+          const bool value = boost::any_cast<bool>( option->value() );
           setPreferenceValueInternal( option->m_name, value, viewer );
           break;
         }//case Boolean
@@ -809,7 +809,7 @@ rapidxml::xml_node<char> *UserPreferences::userOptionsToXml(
       break;
         
       case UserOption::Boolean:
-        valstr = (std::any_cast<bool>(option->value()) ? "true" : "false");
+        valstr = (boost::any_cast<bool>(option->value()) ? "true" : "false");
       break;
     }//switch( m_type )
     

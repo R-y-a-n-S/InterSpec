@@ -374,11 +374,11 @@ namespace FluxToolImp
     }//void handleFluxToolWidgetUpdated()
     
     
-    virtual std::any data( const Wt::WModelIndex &index,
+    virtual boost::any data( const Wt::WModelIndex &index,
                              int role = Wt::DisplayRole ) const
     {
       if( index.parent().isValid() )
-        return std::any();
+        return boost::any();
       
       const int row = index.row();
       const int col = index.column();
@@ -386,7 +386,7 @@ namespace FluxToolImp
       if( row < 0 || col < 0
          || col >= FluxToolWidget::FluxColumns::FluxNumColumns
          || row >= static_cast<int>(m_sort_indices.size()) )
-        return std::any();
+        return boost::any();
       
       const size_t realind = m_sort_indices[row];
       
@@ -402,33 +402,33 @@ namespace FluxToolImp
       {
         case Wt::DisplayRole:
           if( col == FluxToolWidget::FluxColumns::FluxNuclideCol )
-            return nucs[realind].empty() ? std::any() : std::any( WString::fromUTF8(nucs[realind]) );
-          return std::any( data[realind][col] );
+            return nucs[realind].empty() ? boost::any() : boost::any( WString::fromUTF8(nucs[realind]) );
+          return boost::any( data[realind][col] );
           
         //case Wt::StyleClassRole: break;
         //case Wt::ToolTipRole: break;
         case Wt::UserRole:
           if( col == FluxToolWidget::FluxColumns::FluxNuclideCol )
-            return std::any();
-          return uncerts[realind][col] > std::numeric_limits<double>::epsilon() ? std::any(uncerts[realind][col]) : std::any();
+            return boost::any();
+          return uncerts[realind][col] > std::numeric_limits<double>::epsilon() ? boost::any(uncerts[realind][col]) : boost::any();
 
         default:
-          return std::any();
+          return boost::any();
       }//switch( role )
       
-      return std::any();
+      return boost::any();
     }//data(...)
     
     
-    std::any headerData( int section,
+    boost::any headerData( int section,
                           Wt::Orientation orientation = Wt::Horizontal,
                           int role = Wt::DisplayRole ) const
     {
       if( section < 0 || section >= FluxToolWidget::FluxColumns::FluxNumColumns
          || orientation != Wt::Horizontal
          || role != Wt::DisplayRole )
-        return std::any();
-      return std::any( m_fluxtool->m_colnames[section] );
+        return boost::any();
+      return boost::any( m_fluxtool->m_colnames[section] );
     }
     
     virtual int columnCount( const Wt::WModelIndex &parent
@@ -529,9 +529,9 @@ namespace FluxToolImp
         double val = 0.0, uncert = 0.0;
         try
         {
-          val = std::any_cast<double>(data);
+          val = boost::any_cast<double>(data);
           if( hasUncert )
-            uncert = std::any_cast<double>(uncertdata);
+            uncert = boost::any_cast<double>(uncertdata);
         }catch(...)
         {
           return oldwidget;

@@ -34,7 +34,7 @@
 #include <string>
 #include <sstream>
 
-
+#include <boost/any.hpp>
 
 #include <Wt/WString>
 #include <Wt/Dbo/Dbo>
@@ -429,7 +429,7 @@ public:
   
   virtual int columnCount( const Wt::WModelIndex &parent = Wt::WModelIndex() ) const;
   virtual int rowCount( const Wt::WModelIndex &parent = Wt::WModelIndex() ) const;
-  virtual std::any data( const Wt::WModelIndex &index,
+  virtual boost::any data( const Wt::WModelIndex &index,
                            int role = Wt::DisplayRole ) const;
   std::shared_ptr<SpectraFileHeader> fileHeader( int row );
   Wt::WModelIndex index( std::shared_ptr<SpectraFileHeader> header ) const;
@@ -458,7 +458,7 @@ public:
   virtual Wt::WModelIndex index( int row, int column,
                              const Wt::WModelIndex &parent = Wt::WModelIndex()
                                                              ) const;
-  virtual std::any headerData( int section,
+  virtual boost::any headerData( int section,
                                  Wt::Orientation orientation = Wt::Horizontal,
                                  int role = Wt::DisplayRole ) const;
   virtual void sort( int column, Wt::SortOrder order = Wt::AscendingOrder );

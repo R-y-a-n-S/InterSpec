@@ -7,7 +7,7 @@
 // Disable streamsize <=> size_t warnings in boost
 #pragma warning(disable:4244)
 
-
+#include <boost/any.hpp>
 
 #include <Wt/WSignal>
 #include <Wt/WString>
@@ -464,7 +464,7 @@ void QLSpectrumDataModel::yRangeInXRange( const double xMin, const double xMax,
     {
       try
       {
-        const double val = std::any_cast<double>( data( index( row, column ), DisplayRole ) );
+        const double val = boost::any_cast<double>( data( index( row, column ), DisplayRole ) );
         yMax = max( yMax, val );
         yMin = min( yMin, val );
       } catch(...) { }
@@ -525,7 +525,7 @@ double QLSpectrumDataModel::data( int row, int column ) const
 {
   try
   {
-    return std::any_cast<double>( data( index( row, column ), DisplayRole ) );
+    return boost::any_cast<double>( data( index( row, column ), DisplayRole ) );
   }
   catch(...)
   {
@@ -536,7 +536,7 @@ double QLSpectrumDataModel::data( int row, int column ) const
 } // double QLSpectrumDataModel::data( int row, int column ) const
 
 
-std::any QLSpectrumDataModel::displayBinValue( int row,
+boost::any QLSpectrumDataModel::displayBinValue( int row,
                                                QLSpectrumDataModel::ColumnType column ) const
 {
   //Could optimize this function to be a bit more efficient since we no longer
@@ -544,12 +544,12 @@ std::any QLSpectrumDataModel::displayBinValue( int row,
   std::shared_ptr<const Measurement> xHist = histUsedForXAxis();
 
   if( !xHist )
-    return std::any();
+    return boost::any();
 
   const size_t nchannel = xHist->num_gamma_channels();
   const int numRows = static_cast<int>(nchannel) / m_rebinFactor;
   if( (row < 0) || (row >= numRows) )
-    return std::any();
+    return boost::any();
 
   const size_t newxAxisFirstBin = std::min( static_cast<size_t>(row * m_rebinFactor), nchannel-1);
   const size_t newxAxisLastBin = std::min( static_cast<size_t>(newxAxisFirstBin + m_rebinFactor - 1), nchannel-1 );
@@ -562,7 +562,7 @@ std::any QLSpectrumDataModel::displayBinValue( int row,
     {
       const float xMin = xHist->gamma_channel_lower( newxAxisFirstBin );
       const float xMax = xHist->gamma_channel_upper( newxAxisLastBin );
-      return std::any(0.5*(xMax+xMin));
+      return boost::any(0.5*(xMax+xMin));
     }
       
     case DATA_COLUMN:        hist = m_data;       break;
@@ -571,7 +571,7 @@ std::any QLSpectrumDataModel::displayBinValue( int row,
   }//switch( column )
 
   if( !hist )
-    return std::any();
+    return boost::any();
   
   double integral = 0.0;
   const vector<float> &channel_contents = *(hist->gamma_channel_contents());
@@ -619,14 +619,14 @@ std::any QLSpectrumDataModel::displayBinValue( int row,
     case BACKGROUND_COLUMN:  integral *= backgroundScaledBy(); break;
   }//switch( column )
 
-  return std::any( integral );
+  return boost::any( integral );
 }//displayBinValue(...)
 
 
-std::any QLSpectrumDataModel::data( const WModelIndex &index, int role ) const
+boost::any QLSpectrumDataModel::data( const WModelIndex &index, int role ) const
 {
   if( role != Wt::DisplayRole )
-    return std::any();
+    return boost::any();
 
   const int row    = index.row();
   const int column = index.column();
@@ -640,9 +640,9 @@ std::any QLSpectrumDataModel::data( const WModelIndex &index, int role ) const
 
   // Make sure it's within standard bounds.
   if( ( row    < 0 ) || ( row    >= numRows    ) )
-    return std::any();
+    return boost::any();
   if( ( column < 0 ) || ( column >= numColumns ) )
-    return std::any();
+    return boost::any();
 
   if( column == X_AXIS_COLUMN )
     return displayBinValue( row, X_AXIS_COLUMN );
@@ -654,7 +654,7 @@ std::any QLSpectrumDataModel::data( const WModelIndex &index, int role ) const
     
     const double value = asNumber( displayBinValue( row, DATA_COLUMN ) )
                          - asNumber( displayBinValue( row, BACKGROUND_COLUMN ) );
-    return std::any( value );
+    return boost::any( value );
   }else if( (column == SECOND_DATA_COLUMN) && !!m_secondData )
   {
     if( !m_backgroundSubtract || m_secondDataOwnAxis || !m_background )
@@ -662,14 +662,14 @@ std::any QLSpectrumDataModel::data( const WModelIndex &index, int role ) const
     
     const double value = asNumber( displayBinValue( row, SECOND_DATA_COLUMN ) )
                          - asNumber( displayBinValue( row, BACKGROUND_COLUMN ) );
-    return std::any( value );
+    return boost::any( value );
   }else if( (column == BACKGROUND_COLUMN) && m_background )
   {
     return displayBinValue( row, BACKGROUND_COLUMN );
   }
   
-  return std::any();
-} //std::any QLSpectrumDataModel::data( const WModelIndex &index, int role ) const
+  return boost::any();
+} //boost::any QLSpectrumDataModel::data( const WModelIndex &index, int role ) const
 
 
 WModelIndex QLSpectrumDataModel::index( int row, int column, const WModelIndex & ) const
@@ -715,7 +715,7 @@ bool QLSpectrumDataModel::columnHasData( int column ) const
 }
 
 
-std::any QLSpectrumDataModel::headerData( int section, Orientation orientation, int role ) const
+boost::any QLSpectrumDataModel::headerData( int section, Orientation orientation, int role ) const
 {
   // If orientation is horizontal, the section is a column (histogram) number.
   // If orientation is vertical,   the section is a row    (bin)       number.
@@ -779,8 +779,8 @@ std::any QLSpectrumDataModel::headerData( int section, Orientation orientation, 
   } // else if( m_background && section == BACKGROUND_COLUMN )
   
   // This should never happen, but just in case.
-  return std::any();
-} // std::any QLSpectrumDataModel::headerData( int section, Orientation orientation, int role ) const
+  return boost::any();
+} // boost::any QLSpectrumDataModel::headerData( int section, Orientation orientation, int role ) const
 
 
 void QLSpectrumDataModel::reset()

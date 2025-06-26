@@ -39,7 +39,7 @@
 #pragma warning(disable:4308) // warning C4308: negative integral constant converted to unsigned type
 #pragma warning(disable:4355) // warning C4308: negative integral constant converted to unsigned type
 
-
+#include <boost/any.hpp>
 #include <boost/range.hpp>
 #include <boost/scope_exit.hpp>
 #include <boost/system/error_code.hpp>

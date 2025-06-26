@@ -576,21 +576,21 @@ WFlags<ItemFlag> DecayParticleModel::flags( const WModelIndex &p ) const
 }
 
 
-std::any DecayParticleModel::data( const WModelIndex &index, int role ) const
+boost::any DecayParticleModel::data( const WModelIndex &index, int role ) const
 {
   using namespace SandiaDecay;
 
   if( role != DisplayRole )
-    return std::any();
+    return boost::any();
 
   const int row = index.row();
   const int nrow = static_cast<int>( m_data.size() );
   if( row < 0 || row >= nrow )
-    return std::any();
+    return boost::any();
 
   const int column = index.column();
   if( column < 0 || column >= kNumColumn )
-    return std::any();
+    return boost::any();
 
   const RowData &dataRow = m_data[row];
   
@@ -609,7 +609,7 @@ std::any DecayParticleModel::data( const WModelIndex &index, int role ) const
     case kResponsibleNuc:
       if( dataRow.responsibleNuc )
         return WString( dataRow.responsibleNuc->symbol );
-      return std::any();
+      return boost::any();
 
     case kDecayMode:
     {
@@ -637,7 +637,7 @@ std::any DecayParticleModel::data( const WModelIndex &index, int role ) const
         case RowData::CascadeSumMode:               return WString::tr( "rpd-tbl-cascade-sum" );
       }//switch( dataRow.decayMode )
 
-      return std::any();
+      return boost::any();
     }//case kDecayMode:
 
     case kParticleType:
@@ -657,15 +657,15 @@ std::any DecayParticleModel::data( const WModelIndex &index, int role ) const
         case CaptureElectronParticle: return WString( "ec" );
         case XrayParticle:            return WString::tr( "rpd-tbl-xray" );
       }//switch( dataRow.particle )
-      return std::any();
+      return boost::any();
     }//case kParticleType:
   }//switch( column )
 
-  return std::any();
-}//std::any data( const Wt::WModelIndex &index, int role  )
+  return boost::any();
+}//boost::any data( const Wt::WModelIndex &index, int role  )
 
 
-std::any DecayParticleModel::headerData( int column,
+boost::any DecayParticleModel::headerData( int column,
                                            Orientation orientation,
                                            int role ) const
 {
@@ -686,7 +686,7 @@ std::any DecayParticleModel::headerData( int column,
       case kResponsibleNuc: return WString::tr( "rpd-tbl-hdr-parent" );
       case kDecayMode:      return WString::tr( "rpd-tbl-hdr-mode" );
       case kParticleType:   return WString::tr( "rpd-tbl-hdr-particle" );
-      case kNumColumn:      return std::any();
+      case kNumColumn:      return boost::any();
     }//switch( column )
   }else if( role == ToolTipRole )
   {
@@ -703,11 +703,11 @@ std::any DecayParticleModel::headerData( int column,
       case kParticleType:
         return WString::tr( "rpd-tbl-hdr-tt-type" );
       case kNumColumn:
-      return std::any();
+      return boost::any();
     }//switch( column )
   }//if( role == DisplayRole ) / else
 
-  return std::any();
+  return boost::any();
 }//headerData(...)
 
 

@@ -146,7 +146,7 @@ const std::string InterSpecUser::sm_defaultPreferenceFile = "default_preferences
 namespace
 {
   
-  /** Compares two std::any objects to check if their underlying type is
+  /** Compares two boost::any objects to check if their underlying type is
    the same, and if so, if their values are equal.
    
    Currently only supports underlying types of std::string, bool, int, double
@@ -154,7 +154,7 @@ namespace
    
    Throws exception if types are not supported.
    */
-  bool boost_any_equal( const std::any& lhs, const std::any& rhs )
+  bool boost_any_equal( const boost::any& lhs, const boost::any& rhs )
   {
    
     if( lhs.type() == typeid(std::string) )
@@ -162,7 +162,7 @@ namespace
       if( rhs.type() != typeid(std::string) )
         return false;
       
-      return std::any_cast<std::string>(lhs) == std::any_cast<std::string>(rhs);
+      return boost::any_cast<std::string>(lhs) == boost::any_cast<std::string>(rhs);
     }//if( string )
     
     
@@ -173,14 +173,14 @@ namespace
       
       double lhsval, rhsval;
       if( lhs.type() == typeid(double) )
-        lhsval = std::any_cast<double>(lhs);
+        lhsval = boost::any_cast<double>(lhs);
       else
-        lhsval = std::any_cast<float>(lhs);
+        lhsval = boost::any_cast<float>(lhs);
       
       if( rhs.type() == typeid(double) )
-        rhsval = std::any_cast<double>(rhs);
+        rhsval = boost::any_cast<double>(rhs);
       else
-        rhsval = std::any_cast<float>(rhs);
+        rhsval = boost::any_cast<float>(rhs);
       
       return lhsval == rhsval;
     }//if( double or float )
@@ -192,18 +192,18 @@ namespace
       
       int64_t lhsval, rhsval;
       if( lhs.type() == typeid(int) )
-        lhsval = std::any_cast<int>(lhs);
+        lhsval = boost::any_cast<int>(lhs);
       else if( lhs.type() == typeid(unsigned int) )
-        lhsval = std::any_cast<unsigned int>(lhs);
+        lhsval = boost::any_cast<unsigned int>(lhs);
       else
-        lhsval = std::any_cast<long long>(lhs);
+        lhsval = boost::any_cast<long long>(lhs);
       
       if( rhs.type() == typeid(int) )
-        rhsval = std::any_cast<int>(rhs);
+        rhsval = boost::any_cast<int>(rhs);
       else if( rhs.type() == typeid(unsigned int) )
-        rhsval = std::any_cast<unsigned int>(rhs);
+        rhsval = boost::any_cast<unsigned int>(rhs);
       else
-        rhsval = std::any_cast<long long>(rhs);
+        rhsval = boost::any_cast<long long>(rhs);
       
       return lhsval == rhsval;
     }
@@ -213,7 +213,7 @@ namespace
       if( rhs.type() != typeid(bool) )
         return false;
       
-      return std::any_cast<bool>(lhs) == std::any_cast<bool>(rhs);
+      return boost::any_cast<bool>(lhs) == boost::any_cast<bool>(rhs);
     }//if( string )
     
     cerr << "boost_any_equal: unimplemented type encountered" << endl;
@@ -735,7 +735,7 @@ UserFileInDbData::UserFileInDbData()
 }
 
 
-std::any UserOption::value() const
+boost::any UserOption::value() const
 {
   if( m_name.empty() || ((m_type != String) && m_value.empty()) )
     throw runtime_error( "UserOption::value(): un-initialized UserOption" );
@@ -777,8 +777,8 @@ std::any UserOption::value() const
   }//switch( m_type )
   
   throw runtime_error( "UserOption::value(): invalid m_type" );
-  return std::any();
-}//std::any value() const
+  return boost::any();
+}//boost::any value() const
 
 
 InterSpecUser::InterSpecUser()

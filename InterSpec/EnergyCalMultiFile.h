@@ -105,12 +105,12 @@ public:
   virtual int rowCount( const Wt::WModelIndex &parent = Wt::WModelIndex() ) const;
   virtual int columnCount( const Wt::WModelIndex &parent = Wt::WModelIndex() ) const;
   
-  virtual std::any data( const Wt::WModelIndex &index,
+  virtual boost::any data( const Wt::WModelIndex &index,
                            int role = Wt::DisplayRole ) const;
   virtual bool setData( const Wt::WModelIndex &index,
-                        const std::any &value, int role = Wt::EditRole );
+                        const boost::any &value, int role = Wt::EditRole );
   virtual Wt::WFlags<Wt::ItemFlag> flags( const Wt::WModelIndex &index ) const;
-  virtual std::any headerData( int section,
+  virtual boost::any headerData( int section,
                                  Wt::Orientation orientation = Wt::Horizontal,
                                  int role = Wt::DisplayRole) const;
   void refreshData();

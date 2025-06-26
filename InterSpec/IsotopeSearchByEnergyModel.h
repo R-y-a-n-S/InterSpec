@@ -28,7 +28,7 @@
 #include <vector>
 #include <memory>
 
-
+#include <boost/any.hpp>
 
 #include <Wt/WString>
 #include <Wt/WModelIndex>
@@ -149,7 +149,7 @@ public:
   virtual int rowCount( const Wt::WModelIndex &parent = Wt::WModelIndex() ) const;
   
   virtual Wt::WModelIndex parent( const Wt::WModelIndex &index ) const;
-  virtual std::any data( const Wt::WModelIndex &index,
+  virtual boost::any data( const Wt::WModelIndex &index,
                           int role = Wt::DisplayRole) const;
   
   //nuclide(...): returns the nuclide IF it is a nuclide defined row, otherwise
@@ -166,7 +166,7 @@ public:
   
   double assumedAge( const Wt::WModelIndex &index ) const;
   
-  virtual std::any headerData( int section,
+  virtual boost::any headerData( int section,
                                 Wt::Orientation orientation = Wt::Horizontal,
                                 int role = Wt::DisplayRole ) const;
   

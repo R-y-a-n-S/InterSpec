@@ -414,7 +414,7 @@ void SourceFitModel::displayUnitsChanged( bool useBq )
   }
   
   //cout << "m_displayCuries is now: " << m_displayCuries << endl;
-}//void SourceFitModel::displayUnitsChanged( std::any value )
+}//void SourceFitModel::displayUnitsChanged( boost::any value )
 
 
 const std::vector<ShieldingSourceFitCalc::IsoFitStruct> &SourceFitModel::underlyingData() const
@@ -874,7 +874,7 @@ void SourceFitModel::setUseSameAgeForIsotopes( bool useSame )
         WModelIndex ind = index( nuc, SourceFitModel::kAge );
         setData( ind, fitAgeWanted );
         ind = index( nuc, SourceFitModel::kAgeUncertainty );
-        setData( ind, std::any() );
+        setData( ind, boost::any() );
         setSharedAgeNuclide( nuc, NULL );
       }else
       {
@@ -1465,7 +1465,7 @@ Wt::WFlags<Wt::ItemFlag> SourceFitModel::flags( const Wt::WModelIndex &index ) c
 
 
 
-std::any SourceFitModel::headerData( int section, Orientation orientation, int role ) const
+boost::any SourceFitModel::headerData( int section, Orientation orientation, int role ) const
 {
   //When orientation is Horizontal, section is a column number,
   //  when orientation is Vertical, section is a row (peak) number.
@@ -1504,48 +1504,48 @@ std::any SourceFitModel::headerData( int section, Orientation orientation, int r
         break;
     }//switch( section )
     if( !tooltip_key )
-      return std::any();
+      return boost::any();
     
-    return std::any( WString::tr(tooltip_key) );
+    return boost::any( WString::tr(tooltip_key) );
   }//if( role == Wt::ToolTipRole )
 
   //If we're here, role==DisplayRole
   switch( section )
   {
-    case kIsotope:     return std::any( WString::tr("Nuclide") );
+    case kIsotope:     return boost::any( WString::tr("Nuclide") );
     case kActivity:
       switch( m_det_type )
       {
         case DetectorPeakResponse::EffGeometryType::FarField:
         case DetectorPeakResponse::EffGeometryType::FixedGeomTotalAct:
-          return std::any( WString::tr("Activity") );
+          return boost::any( WString::tr("Activity") );
           
         case DetectorPeakResponse::EffGeometryType::FixedGeomActPerCm2:
         case DetectorPeakResponse::EffGeometryType::FixedGeomActPerM2:
         case DetectorPeakResponse::EffGeometryType::FixedGeomActPerGram:
-          return std::any( WString("{1}{2}")
+          return boost::any( WString("{1}{2}")
                             .arg( WString::tr("Activity"))
                             .arg( DetectorPeakResponse::det_eff_geom_type_postfix(m_det_type) ) );
       }//switch( m_det_type )
       assert( 0 );
       break;
       
-    case kAge:         return std::any( WString::tr("Age") );
-    case kFitActivity: return std::any( WString::tr("sfm-header-fit-act") );
-    case kFitAge:      return std::any( WString::tr("sfm-header-fit-age") );
-    case kIsotopeMass: return std::any( WString::tr("Mass") );
-    case kActivityUncertainty: return std::any( WString::tr("sfm-header-act-uncert") );
-    case kAgeUncertainty:      return std::any( WString::tr("sfm-header-age-uncert") );
+    case kAge:         return boost::any( WString::tr("Age") );
+    case kFitActivity: return boost::any( WString::tr("sfm-header-fit-act") );
+    case kFitAge:      return boost::any( WString::tr("sfm-header-fit-age") );
+    case kIsotopeMass: return boost::any( WString::tr("Mass") );
+    case kActivityUncertainty: return boost::any( WString::tr("sfm-header-act-uncert") );
+    case kAgeUncertainty:      return boost::any( WString::tr("sfm-header-age-uncert") );
 #if( INCLUDE_ANALYSIS_TEST_SUITE )
-    case kTruthActivity:          return std::any( WString("Truth Act.") );
-    case kTruthActivityTolerance: return std::any( WString("Truth Act. Tol.") );
-    case kTruthAge:               return std::any( WString("Truth Age") );
-    case kTruthAgeTolerance:      return std::any( WString("Truth Age Tol.") );
+    case kTruthActivity:          return boost::any( WString("Truth Act.") );
+    case kTruthActivityTolerance: return boost::any( WString("Truth Act. Tol.") );
+    case kTruthAge:               return boost::any( WString("Truth Age") );
+    case kTruthAgeTolerance:      return boost::any( WString("Truth Age Tol.") );
 #endif
-    case kNumColumns:  return std::any();
+    case kNumColumns:  return boost::any();
   }//switch( section )
 
-  return std::any();
+  return boost::any();
 }//headerData(...)
 
 
@@ -1555,14 +1555,14 @@ Wt::WModelIndex SourceFitModel::parent( const Wt::WModelIndex &index ) const
 }//Wt::WModelIndex parent(...) const
 
 
-std::any SourceFitModel::data( const Wt::WModelIndex &index, int role ) const
+boost::any SourceFitModel::data( const Wt::WModelIndex &index, int role ) const
 {
   //should consider implementing ToolTipRole
   if( (role != Wt::DisplayRole) && (role != Wt::EditRole) && (role != Wt::ToolTipRole)
      && (role != (Wt::ItemDataRole::UserRole + 10))
     && !((role==Wt::CheckStateRole) && ((index.column()==kFitActivity) || (index.column()==kFitAge))) )
   {
-    return std::any();
+    return boost::any();
   }
 
   
@@ -1571,7 +1571,7 @@ std::any SourceFitModel::data( const Wt::WModelIndex &index, int role ) const
   const int nrows = static_cast<int>( m_nuclides.size() );
   
   if( row<0 || column<0 || column>=kNumColumns || row>=nrows )
-    return std::any();
+    return boost::any();
 
   const bool extra_precision = (role == (Wt::ItemDataRole::UserRole + 10));
   const ShieldingSourceFitCalc::IsoFitStruct &isof = m_nuclides[row];
@@ -1584,20 +1584,20 @@ std::any SourceFitModel::data( const Wt::WModelIndex &index, int role ) const
                       .arg( WString::tr("T1/2") )
                       .arg( PhysicalUnitsLocalized::printToBestTimeUnits( isof.nuclide->halfLife, 2, PhysicalUnits::second ) );
       // TODO: should put in dominant photopeaks or other information here
-      return std::any( msg );
+      return boost::any( msg );
     }else if( column == kAge )
     {
       if( !isof.ageIsFittable )
-        return std::any( WString::tr("sfm-tt-aging-not-allowed") );
+        return boost::any( WString::tr("sfm-tt-aging-not-allowed") );
     }//if / else to determine column
 
-    return std::any();
+    return boost::any();
   }//if( role == Wt::ToolTipRole )
 
   switch( column )
   {
     case kIsotope:
-      return std::any( WString(isof.nuclide->symbol) );
+      return boost::any( WString(isof.nuclide->symbol) );
       
     case kActivity:
     {
@@ -1635,7 +1635,7 @@ std::any SourceFitModel::data( const Wt::WModelIndex &index, int role ) const
         ans += DetectorPeakResponse::det_eff_geom_type_postfix(m_det_type);
       }//if( shouldHaveUncert )
       
-      return std::any( WString(ans) );
+      return boost::any( WString(ans) );
     }//case kActivity:
 
     case kFitActivity:
@@ -1643,18 +1643,18 @@ std::any SourceFitModel::data( const Wt::WModelIndex &index, int role ) const
       switch( isof.sourceType )
       {
         case ShieldingSourceFitCalc::ModelSourceType::Point:
-          return std::any( isof.fitActivity );
+          return boost::any( isof.fitActivity );
           
         case ShieldingSourceFitCalc::ModelSourceType::Intrinsic:
         case ShieldingSourceFitCalc::ModelSourceType::Trace:
-          return std::any();
+          return boost::any();
       }//switch( iso.sourceType )
     }//case kFitActivity:
 
     case kAge:
     {
 //      if( isof.shieldingIsSource )
-//        return std::any();
+//        return boost::any();
       double age = 0.0, uncert = 0.0;
       const SandiaDecay::Nuclide *nuc = nullptr;
       if( isof.ageDefiningNuc && (isof.ageDefiningNuc != isof.nuclide) )
@@ -1685,33 +1685,33 @@ std::any SourceFitModel::data( const Wt::WModelIndex &index, int role ) const
       }//if( isof.ageDefiningNuc && (isof.ageDefiningNuc!=isof.nuclide) )
       
       if( !isof.ageIsFittable )
-        return std::any( WString::tr("NA") );
+        return boost::any( WString::tr("NA") );
       
       string ans = PhysicalUnitsLocalized::printToBestTimeUnits( age, (extra_precision ? 8 : 2) );
       if( uncert > 0.0 )
         ans += " \xC2\xB1 " + PhysicalUnitsLocalized::printToBestTimeUnits( uncert, (extra_precision ? 8 : 1) );
       
-      return std::any( WString(ans) );
+      return boost::any( WString(ans) );
     }//case kAge:
 
     case kFitAge:
     {
 //      if( isof.shieldingIsSource )
-//        return std::any();
+//        return boost::any();
       if( isof.ageDefiningNuc && (isof.ageDefiningNuc != isof.nuclide) )
-        return std::any();
+        return boost::any();
       
       // Make sure there is more than two peaks being fitted for this nuclide to enable fitting age
       //  (I guess you could fix activity, and shielding, and select a progeny peak, and fit for
       //   age based on that peak growing in, but this probably isnt realistically ever done, but if
       //   you did want to do it, you could round-about calculate it)
       if( (isof.numProgenyPeaksSelected <= 1) && !isof.ageDefiningNuc )
-        return std::any();
+        return boost::any();
       
       if( !isof.ageIsFittable )
-        return std::any();
+        return boost::any();
       
-      return std::any( isof.fitAge );
+      return boost::any( isof.fitAge );
     }//case kFitAge:
 
     case kIsotopeMass:
@@ -1720,76 +1720,76 @@ std::any SourceFitModel::data( const Wt::WModelIndex &index, int role ) const
       const double mass_grams = act / isof.nuclide->activityPerGram();
 
       if( IsInf(mass_grams) || IsNan(mass_grams) )
-        return std::any();
+        return boost::any();
 
-      return std::any( WString(PhysicalUnits::printToBestMassUnits(mass_grams,(extra_precision ? 8 : 3),1.0)) );
+      return boost::any( WString(PhysicalUnits::printToBestMassUnits(mass_grams,(extra_precision ? 8 : 3),1.0)) );
     }//case kIsotopeMass:
 
     case kActivityUncertainty:
     {
       if( isof.activityUncertainty < 0.0 )
-        return std::any();
+        return boost::any();
       
       double act = isof.activityUncertainty;
       string ans = PhysicalUnits::printToBestActivityUnits( act, (extra_precision ? 8 : 2), m_displayCuries );
       ans += DetectorPeakResponse::det_eff_geom_type_postfix(m_det_type);
       
-      return std::any( WString(ans) );
+      return boost::any( WString(ans) );
     }//case kActivityUncertainty:
 
     case kAgeUncertainty:
     {
       if( (!isof.ageIsFittable) || isof.ageUncertainty < 0.0 )
-        return std::any();
+        return boost::any();
       const string ans = PhysicalUnitsLocalized::printToBestTimeUnits( isof.ageUncertainty, (extra_precision ? 8 : 2) );
-      return std::any( WString(ans) );
+      return boost::any( WString(ans) );
     }//case kAgeUncertainty:
 
 #if( INCLUDE_ANALYSIS_TEST_SUITE )
     case kTruthActivity:
     {
       if( !isof.truthActivity )
-        return std::any();
+        return boost::any();
       
       string ans = PhysicalUnits::printToBestActivityUnits( *isof.truthActivity, (extra_precision ? 8 : 4), m_displayCuries );
       ans += DetectorPeakResponse::det_eff_geom_type_postfix(m_det_type);
       
-      return std::any( WString(ans) );
+      return boost::any( WString(ans) );
     }
       
     case kTruthActivityTolerance:
     {
       if( !isof.truthActivityTolerance )
-        return std::any();
+        return boost::any();
       string ans = PhysicalUnits::printToBestActivityUnits( *isof.truthActivityTolerance, (extra_precision ? 8 : 4), m_displayCuries );
       ans += DetectorPeakResponse::det_eff_geom_type_postfix(m_det_type);
       
-      return std::any( WString(ans) );
+      return boost::any( WString(ans) );
     }
       
     case kTruthAge:
     {
       if( !isof.truthAge )
-        return std::any();
+        return boost::any();
       const string ans = PhysicalUnitsLocalized::printToBestTimeUnits( *isof.truthAge, (extra_precision ? 8 : 4) );
-      return std::any( WString(ans) );
+      return boost::any( WString(ans) );
     }
       
     case kTruthAgeTolerance:
     {
       if( !isof.truthAgeTolerance )
-        return std::any();
+        return boost::any();
       const string ans = PhysicalUnitsLocalized::printToBestTimeUnits( *isof.truthAgeTolerance, (extra_precision ? 8 : 4) );
-      return std::any( WString(ans) );
+      return boost::any( WString(ans) );
     }
 #endif  //#if( INCLUDE_ANALYSIS_TEST_SUITE )
       
     case kNumColumns:
-      return std::any();
+      return boost::any();
   }//switch( column )
 
-  return std::any();
-}//std::any data(...) const
+  return boost::any();
+}//boost::any data(...) const
 
 
 Wt::WModelIndex SourceFitModel::index( int row, int column,
@@ -1822,7 +1822,7 @@ WModelIndex SourceFitModel::index( const string &symbol,
 }//WModelIndex index(...) const
 
 
-bool SourceFitModel::setData( const Wt::WModelIndex &index, const std::any &value, int role )
+bool SourceFitModel::setData( const Wt::WModelIndex &index, const boost::any &value, int role )
 {
   try
   {
@@ -1873,7 +1873,7 @@ bool SourceFitModel::setData( const Wt::WModelIndex &index, const std::any &valu
       if( value.type() != boost::typeindex::type_id<bool>().type_info() )
         return false;
       
-      boolean_val = std::any_cast<bool>( value );
+      boolean_val = boost::any_cast<bool>( value );
     }//if( (column==kFitActivity) || (column==kFitAge) )
 
     const WString txt_val = asString( value );
@@ -1900,8 +1900,8 @@ bool SourceFitModel::setData( const Wt::WModelIndex &index, const std::any &valu
 #if( SOURCE_FIT_MODEL_FULL_COPY_UNDO_REDO )
     const auto prev_data = make_shared<const vector<ShieldingSourceFitCalc::IsoFitStruct>>( m_nuclides );
 #else
-    const std::any prev_value = SourceFitModel::data( index, Wt::ItemDataRole::UserRole + 10 );
-    const std::any new_value = value;
+    const boost::any prev_value = SourceFitModel::data( index, Wt::ItemDataRole::UserRole + 10 );
+    const boost::any new_value = value;
 #endif
     
 
@@ -2302,9 +2302,9 @@ void ShieldingSourceDisplay::Chi2Graphic::calcAndSetAxisRanges()
       const double energy = theModel->data(row,0);
 #else
       WModelIndex index = theModel->index(row,ycol);
-      const double thischi = std::any_cast<double>( theModel->data(index) );
+      const double thischi = boost::any_cast<double>( theModel->data(index) );
       index = theModel->index(row,0);
-      const double energy = std::any_cast<double>( theModel->data(index) );
+      const double energy = boost::any_cast<double>( theModel->data(index) );
 #endif
       xmin = std::min( xmin, energy );
       xmax = std::max( xmax, energy );
@@ -2496,15 +2496,15 @@ void ShieldingSourceDisplay::Chi2Graphic::paint( Wt::WPainter &painter,
     try
     {
       WModelIndex index = chi2Model->index(row,1);
-      const double thischi = std::any_cast<double>( chi2Model->data(index) );
+      const double thischi = boost::any_cast<double>( chi2Model->data(index) );
       chi2 += thischi*thischi;
       
 
       WColor color;
       try
       {
-        std::any color_any = chi2Model->data(index, Wt::MarkerPenColorRole );
-        color = std::any_cast<WColor>(color_any);
+        boost::any color_any = chi2Model->data(index, Wt::MarkerPenColorRole );
+        color = boost::any_cast<WColor>(color_any);
         if( color.isDefault() )
           throw runtime_error("");
       }catch(...)
@@ -2518,10 +2518,10 @@ void ShieldingSourceDisplay::Chi2Graphic::paint( Wt::WPainter &painter,
       }//try / catch, get the color
       
       index = chi2Model->index(row,2);
-      const double thisscale = std::any_cast<double>( chi2Model->data(index) );
+      const double thisscale = boost::any_cast<double>( chi2Model->data(index) );
       
       index = chi2Model->index(row,0);
-      double energy = std::any_cast<double>( chi2Model->data(index) );
+      double energy = boost::any_cast<double>( chi2Model->data(index) );
       
       
       const double yval = m_showChi ? thischi : thisscale;
@@ -2559,7 +2559,7 @@ void ShieldingSourceDisplay::Chi2Graphic::paint( Wt::WPainter &painter,
       if( !m_showChi )
       {
         index = chi2Model->index(row,4);
-        const double scale_uncert = std::any_cast<double>( chi2Model->data(index) );
+        const double scale_uncert = boost::any_cast<double>( chi2Model->data(index) );
         
         const WPointF upper_uncert = mapToDevice( energy, yval + scale_uncert );
         const WPointF lower_uncert = mapToDevice( energy, yval - scale_uncert );
@@ -5651,7 +5651,7 @@ void ShieldingSourceDisplay::handleDetectorChanged( std::shared_ptr<DetectorPeak
       for( const SandiaDecay::Nuclide *nuc : nucs_fitting_act )
       {
         WModelIndex index = m_sourceModel->index( nuc, SourceFitModel::Columns::kFitActivity );
-        m_sourceModel->setData( index, std::any(true), Wt::CheckStateRole );
+        m_sourceModel->setData( index, boost::any(true), Wt::CheckStateRole );
       }
     }//for( WWidget *widget : m_shieldingSelects->children() )
     
@@ -5796,18 +5796,18 @@ void ShieldingSourceDisplay::updateChi2ChartActual( std::shared_ptr<const Shield
         continue;
       }//if( IsNan(p.second) || IsInf(p.second) )
       
-      m_chi2Model->setData( row, 0, std::any(energy) );
-      m_chi2Model->setData( row, 1, std::any(chi) );
-      m_chi2Model->setData( row, 2, std::any(scale) );
+      m_chi2Model->setData( row, 0, boost::any(energy) );
+      m_chi2Model->setData( row, 1, boost::any(chi) );
+      m_chi2Model->setData( row, 2, boost::any(scale) );
       
       if( color.isDefault() )
         color = m_specViewer->getColorTheme()->defaultPeakLine;
       color.setRgb( color.red(), color.green(), color.blue(), 255 );
       
-      m_chi2Model->setData( row, 1, std::any(color), Wt::MarkerPenColorRole );
-      m_chi2Model->setData( row, 1, std::any(color), Wt::MarkerBrushColorRole );
-      m_chi2Model->setData( row, 2, std::any(color), Wt::MarkerPenColorRole );
-      m_chi2Model->setData( row, 2, std::any(color), Wt::MarkerBrushColorRole );
+      m_chi2Model->setData( row, 1, boost::any(color), Wt::MarkerPenColorRole );
+      m_chi2Model->setData( row, 1, boost::any(color), Wt::MarkerBrushColorRole );
+      m_chi2Model->setData( row, 2, boost::any(color), Wt::MarkerPenColorRole );
+      m_chi2Model->setData( row, 2, boost::any(color), Wt::MarkerBrushColorRole );
       
       //If we wanted to include the nuclide in the model, we would have to loop
       //  over photopeaks in m_peakModel to try and match things up
@@ -5827,8 +5827,8 @@ void ShieldingSourceDisplay::updateChi2ChartActual( std::shared_ptr<const Shield
           }
         }//for( const PeakModel::PeakShrdPtr &p : *peaks )
         
-        m_chi2Model->setData( row, 3, std::any(nuclidename) );
-        m_chi2Model->setData( row, 4, std::any(scale_uncert) );
+        m_chi2Model->setData( row, 3, boost::any(nuclidename) );
+        m_chi2Model->setData( row, 4, boost::any(scale_uncert) );
       }//if( !!peaks )
     }//for( int row = 0; row < nrow; ++row  )
   }catch( std::exception &e )
@@ -8691,7 +8691,7 @@ void ShieldingSourceDisplay::updateGuiWithModelFitResults( std::shared_ptr<Shiel
           
           if( activityUncert < FLT_EPSILON )
           {
-            m_sourceModel->setData( actUncertIndex, std::any() );
+            m_sourceModel->setData( actUncertIndex, boost::any() );
           }else
           {
             char actUncertStr[64] = { '\0' };
@@ -8713,7 +8713,7 @@ void ShieldingSourceDisplay::updateGuiWithModelFitResults( std::shared_ptr<Shiel
         }
       }else if( m_sourceModel->activityUncert(ison) >= 0.0 )
       {
-        m_sourceModel->setData( actUncertIndex, std::any() );
+        m_sourceModel->setData( actUncertIndex, boost::any() );
       }//if( effectivelyFitActivity )
     }//for( int ison = 0; ison < niso; ++ison )
     */

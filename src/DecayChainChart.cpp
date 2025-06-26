@@ -50,7 +50,7 @@
 #include <Wt/Chart/WCartesianChart>
 
 #include <boost/ref.hpp>
-
+#include <boost/any.hpp>
 #include <boost/bind.hpp>
 
 #include "SpecUtils/Filesystem.h"
